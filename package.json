@@ -11,7 +11,8 @@
     "build": "npx tsc -p .",
     "lint": "npx eslint ./src",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepare": "husky install"
   },
   "dependencies": {
     "express": "^4.21.2"
@@ -26,6 +27,7 @@
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
     "globals": "^15.15.0",
+    "husky": "^8.0.0",
     "jest": "^29.7.0",
     "prettier": "^3.5.1",
     "supertest": "^7.0.0",
