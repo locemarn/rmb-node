@@ -14,7 +14,7 @@ on:
       - 'Feature/**'
 
 jobs:
-  build:
+  ci-cd:
     runs-on: ubuntu-latest
 
     strategy:
