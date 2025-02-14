@@ -1,5 +1,5 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/locemarn/rmb-node
     rev: v4.1.0
     hooks:
       - id: no-commit-to-branch
