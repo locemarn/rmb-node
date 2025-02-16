@@ -1,4 +1,4 @@
-import expressApp from './expressApp'
+import expressApp from './infra/expressApp'
 import dotenv from 'dotenv'
 import config from './config'
 
@@ -21,4 +21,3 @@ export const StartServer = () => {
 }
 
 StartServer()
-console.info('user-service is up.')
