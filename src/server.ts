@@ -1,16 +1,24 @@
-import express, { Request, Response } from 'express'
+import expressApp from './expressApp'
+import dotenv from 'dotenv'
+import config from './config'
 
-const app = express()
-const port = process.env.PORT ?? 3000
+dotenv.config()
 
-app.use(express.json())
+const PORT = config.app.port
 
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Server running.' })
-})
+export const StartServer = () => {
+  expressApp.listen(PORT, () => console.info(`Server running on port: ${PORT}`))
 
-app.listen(port, () => {
-  console.info(`Server is running on http://localhost:${port}`)
-})
+  process.on('uncaughtException', (err) => {
+    console.error('uncaughtException', err)
+    process.exit(1)
+  })
 
-// testing protection main branch
+  process.on('unhandledRejection', (err) => {
+    console.error('unhandledRejection', err)
+    process.exit(1)
+  })
+}
+
+StartServer()
+console.info('user-service is up.')
