@@ -1,16 +1,16 @@
-import { PrismaClient } from '@prisma/client'
 import { UserEntity } from '../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
-import prisma from '../database/prisma/client'
+import { UserPrismaRepository } from '../database/prisma/userPrisma.repository'
 
-export class UserRepository implements UserRepositoryInterface {
-  _prisma: PrismaClient
-
+export class UserRepository
+  extends UserPrismaRepository
+  implements UserRepositoryInterface
+{
   constructor() {
-    this._prisma = prisma
+    super()
   }
+
   async getUsers(): Promise<UserEntity[]> {
-    const users = await prisma.user.findMany({})
-    return users
+    return await super.getUsers()
   }
 }
