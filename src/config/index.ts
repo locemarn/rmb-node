@@ -1,8 +1,13 @@
 import constants from './constants'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const { PROD_ENV, DEV_ENV, TEST_ENV } = constants
 
 const env = process.env.APP_ENV ?? DEV_ENV
+
+console.log('process.env.DATABASE_URL', process.env.DATABASE_URL)
 
 const config = {
   app: {

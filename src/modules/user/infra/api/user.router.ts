@@ -5,8 +5,8 @@ const userRouter = Router()
 
 const userController = new UserController()
 
-userRouter.route('/').get((req, res) => {
-  userController.getUsers(req, res)
+userRouter.route('/').get(async (req, res) => {
+  await userController.getUsers(req, res)
 })
 // .post((req, res) => {
 //   // Implement POST user logic

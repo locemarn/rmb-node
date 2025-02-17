@@ -11,4 +11,3 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-      - uses: cloudposse/github-action-pre-commit@v4.0.0
