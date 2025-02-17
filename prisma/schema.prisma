@@ -5,7 +5,16 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+enum Role {
+  superuser
+  admin
+  reader
+  editor
+  tester
 }
 
 datasource db {
@@ -18,7 +27,7 @@ model User {
   email      String   @unique @db.VarChar(50)
   username   String   @unique @db.VarChar(50)
   password   String   @db.VarChar(50)
-  role       String   @default("reader") @db.VarChar(30)
+  role       Role
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 }
