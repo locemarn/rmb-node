@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Lint code
-        run: npm run lint
+        run: npm run lint:fix
 
       - name: Build the source code
         run: npm run build
