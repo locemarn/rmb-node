@@ -1,7 +1,7 @@
-import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
-import { MockUserRepository } from './mockUsers.repository'
+import { UserRepositoryInterface } from '../../../domain/repository/userRepository.interface'
+import { MockUserRepository } from '../../repository/mockUsers.repository'
 
-describe('UserRepository', () => {
+describe('UserPrismaRepository', () => {
   let repo: UserRepositoryInterface
 
   beforeEach(() => {
@@ -13,8 +13,8 @@ describe('UserRepository', () => {
     jest.clearAllMocks()
   })
 
-  describe('Get All users', () => {
-    test('should return a list of users', async () => {
+  describe('GetAll users', () => {
+    test('get all users', async () => {
       const sut = await repo.getUsers()
       expect(sut).toBeInstanceOf(Array)
       expect(sut.length).toBeGreaterThan(0)
