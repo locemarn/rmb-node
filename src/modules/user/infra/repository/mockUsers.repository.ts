@@ -17,13 +17,44 @@ export const mockUserResponse: UserEntity = {
 }
 
 export class MockUserRepository implements UserRepositoryInterface {
-  private users: UserEntity[] = [mockUser]
+  private users: UserEntity[] = [mockUserResponse]
 
   async getUsers(): Promise<UserEntity[]> {
-    const userList = []
-    for (let i = 0; i < 10; i++) {
-      userList.push(mockUserResponse)
+    return Promise.resolve([mockUserResponse])
+  }
+
+  async create(user: UserEntity): Promise<UserEntity> {
+    const newUser: UserEntity = {
+      ...user,
+      id: faker.number.int({ min: 1, max: 100000 }),
+      created_at: new Date(),
+      updated_at: new Date(),
     }
-    return Promise.resolve(userList)
+    this.users.push(newUser)
+    return Promise.resolve(newUser)
+  }
+  async update(id: number, user: UserEntity): Promise<UserEntity> {
+    if (!id) throw new Error()
+    const updatedUser = {
+      id,
+      ...user,
+      updated_at: new Date(),
+    }
+    return Promise.resolve(updatedUser)
+  }
+  async delete(id: number): Promise<UserEntity | null> {
+    const deletedUser: UserEntity = {
+      ...mockUserResponse,
+      id,
+      updated_at: new Date(),
+    }
+    return Promise.resolve(deletedUser) as unknown as Promise<UserEntity>
+  }
+  async getUserById(id: number): Promise<UserEntity | null> {
+    const userFounded = {
+      ...mockUserResponse,
+      id,
+    }
+    return Promise.resolve(userFounded) as unknown as Promise<UserEntity>
   }
 }
