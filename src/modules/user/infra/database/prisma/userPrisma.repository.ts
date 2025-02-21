@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { UserEntity } from '../../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../../domain/repository/userRepository.interface'
 import prisma from './client'
+import { InvalidInputErrors } from '../../../../../utils/fixtures/errors/invalidInputErrors'
 
 export class UserPrismaRepository implements UserRepositoryInterface {
   _prisma: PrismaClient
@@ -15,13 +16,17 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       const users = await prisma.user.findMany({})
       return users
     } catch (error) {
-      console.error('Error fetching users:', error)
-      throw error
+      // console.error('Error fetching users:', error)
+      const err = error as Error
+      throw new InvalidInputErrors(err.message)
     }
   }
 
-  async create(user: UserEntity): Promise<UserEntity> {
+  async create(user: UserEntity): Promise<UserEntity | null> {
     try {
+      if (!user.username || !user.email || !user.password) {
+        throw new Error('Invalid user data.')
+      }
       const createdUser = await this._prisma.user.create({
         data: {
           username: user.username,
@@ -31,14 +36,16 @@ export class UserPrismaRepository implements UserRepositoryInterface {
         },
       })
       return createdUser
-    } catch (error) {
-      console.error('Error creating user:', error)
-      throw error
+    } catch (error: unknown) {
+      const err = error as Error
+      // console.error('Error creating user:', err.message)
+      throw new InvalidInputErrors(err.message)
     }
   }
 
-  async update(id: number, user: UserEntity): Promise<UserEntity> {
+  async update(id: number, user: UserEntity): Promise<UserEntity | null> {
     try {
+      if (!id) throw new Error('id required for update.')
       const updatedUser = await this._prisma.user.update({
         where: { id },
         data: {
@@ -50,34 +57,38 @@ export class UserPrismaRepository implements UserRepositoryInterface {
         },
       })
       return updatedUser
-    } catch (error) {
-      console.error('Error updating user:', error)
-      throw error
+    } catch (error: unknown) {
+      // console.error('Error updating user:')
+      const err = error as Error
+      throw new InvalidInputErrors(err.message)
     }
   }
 
   async delete(id: number): Promise<UserEntity | null> {
     try {
+      if (!id) throw new Error('id required for delete.')
       const user = await this._prisma.user.delete({
         where: { id },
       })
       return user
     } catch (error) {
-      console.error('Error deleting user:', error)
-      throw error
+      const err = error as Error
+      throw new InvalidInputErrors(err.message)
     }
   }
 
-  async getUserById(id: number): Promise<UserEntity | null> {
+  async getUserById(id: number): Promise<UserEntity | null | string> {
     try {
+      if (!id) throw new Error('Invalid user id.')
       const user = await this._prisma.user.findUnique({
         where: { id },
       })
-      if (!user) return null
+      if (!user) throw new Error('Invalid user id.')
       return user
     } catch (error) {
-      console.error('Error fetching user by id:', error)
-      throw error
+      // console.error('Error fetching user by id:')
+      const err = error as Error
+      throw new InvalidInputErrors(err.message)
     }
   }
 }
