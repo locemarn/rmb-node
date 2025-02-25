@@ -28,7 +28,7 @@ describe('UserPrismaRepository', () => {
 
   afterEach(() => {
     _repo = {} as UserPrismaRepository
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   describe('GetAll users', () => {

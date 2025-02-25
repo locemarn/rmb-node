@@ -11,7 +11,7 @@ export const mockUser: UserEntity = {
 
 export const mockUserResponse: UserEntity = {
   ...mockUser,
-  id: faker.number.int({ min: 1, max: 100000 }),
+  id: 1,
   created_at: faker.date.recent({ days: 10 }),
   updated_at: faker.date.recent({ days: 10 }),
 }
@@ -20,7 +20,7 @@ export class MockUserRepository implements UserRepositoryInterface {
   private users: UserEntity[] = [mockUserResponse]
 
   async getUsers(): Promise<UserEntity[]> {
-    return Promise.resolve([mockUserResponse])
+    return Promise.resolve(this.users)
   }
 
   async create(user: UserEntity): Promise<UserEntity> {
@@ -53,8 +53,8 @@ export class MockUserRepository implements UserRepositoryInterface {
   async getUserById(id: number): Promise<UserEntity | null> {
     const userFounded = {
       ...mockUserResponse,
-      id,
     }
+    if (id !== userFounded.id) return null
     return Promise.resolve(userFounded) as unknown as Promise<UserEntity>
   }
 }

@@ -5,3 +5,14 @@ content-type: application/json
 ###
 GET http://127.0.0.1:8000/api/v1/users
 content-type: application/json
+
+###
+POST http://127.0.0.1:8000/api/v1/users
+content-type: application/json
+
+{
+  "username": "tester3",
+  "email": "tester3@email.com",
+  "password": "123456",
+  "role": "tester"
+}
