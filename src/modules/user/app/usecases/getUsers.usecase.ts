@@ -2,10 +2,12 @@ import { UserRepository } from '../../infra/repository/user.repository'
 
 export class GetUsersUseCase {
   private _repository: UserRepository
-  constructor(public repository: UserRepository) {
+
+  constructor(repository: UserRepository) {
     this._repository = repository
   }
-  execute() {
-    return this._repository.getUsers()
+
+  async execute() {
+    return this._repository.getAllUsers()
   }
 }
