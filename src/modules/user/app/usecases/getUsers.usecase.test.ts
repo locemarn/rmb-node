@@ -1,12 +1,17 @@
 import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
 import { MockUserRepository } from '../../infra/repository/mockUsers.repository'
+import { UserRepository } from '../../infra/repository/user.repository'
 import { GetUsersUseCase } from './getUsers.usecase'
 
 describe('GetUsersUseCase', () => {
   let repo: UserRepositoryInterface
+  let userRepository: UserRepository
+  let getUsersUseCase: GetUsersUseCase
 
   beforeEach(() => {
     repo = new MockUserRepository()
+    userRepository = new UserRepository(repo)
+    getUsersUseCase = new GetUsersUseCase(userRepository)
   })
 
   afterEach(() => {
@@ -15,11 +20,8 @@ describe('GetUsersUseCase', () => {
   })
 
   test('should return all users', async () => {
-    const useCase = new GetUsersUseCase(repo)
-    const users = await useCase.execute()
-
-    expect(users).toBeInstanceOf(Array)
-    // expect(users.length).toBeGreaterThan(0)
-    expect(true).toBeTruthy()
+    const sut = await getUsersUseCase.execute()
+    expect(sut).toBeInstanceOf(Array)
+    expect(sut.length).toBeGreaterThan(0)
   })
 })

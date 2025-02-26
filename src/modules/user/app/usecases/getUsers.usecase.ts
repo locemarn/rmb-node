@@ -1,13 +1,13 @@
-import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
+import { UserRepository } from '../../infra/repository/user.repository'
 
 export class GetUsersUseCase {
-  private _repository: UserRepositoryInterface
+  private _repository: UserRepository
 
-  constructor(repository: UserRepositoryInterface) {
+  constructor(repository: UserRepository) {
     this._repository = repository
   }
 
-  execute() {
-    return this._repository.getUsers()
+  async execute() {
+    return this._repository.getAllUsers()
   }
 }

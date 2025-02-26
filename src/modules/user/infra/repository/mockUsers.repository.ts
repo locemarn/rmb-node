@@ -33,7 +33,7 @@ export class MockUserRepository implements UserRepositoryInterface {
     this.users.push(newUser)
     return Promise.resolve(newUser)
   }
-  async update(id: number, user: UserEntity): Promise<UserEntity> {
+  async update(id: number, user: UserEntity): Promise<UserEntity | null> {
     if (!id) throw new Error()
     const updatedUser = {
       id,

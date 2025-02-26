@@ -1,16 +1,23 @@
+import { InvalidInputErrors } from '../../../../utils/fixtures/errors/invalidInputErrors'
 import { UserEntity } from '../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
-import { UserPrismaRepository } from '../database/prisma/userPrisma.repository'
 
-export class UserRepository extends UserPrismaRepository {
+export class UserRepository {
   private _repository: UserRepositoryInterface
+
   constructor(repository: UserRepositoryInterface) {
-    super()
     this._repository = repository
   }
 
   async getAllUsers(): Promise<UserEntity[]> {
-    return await this._repository.getUsers()
+    try {
+      const users = await this._repository.getUsers()
+      return users
+    } catch (error) {
+      const err = error as Error
+      // change kind of error here
+      throw new InvalidInputErrors(err.message)
+    }
   }
 
   async createUser(user: UserEntity): Promise<UserEntity | null> {

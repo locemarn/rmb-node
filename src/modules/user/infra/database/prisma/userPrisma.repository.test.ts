@@ -101,12 +101,12 @@ describe('UserPrismaRepository', () => {
       const sut = await _repo.delete(mockUserResponse.id)
       expect(sut).not.toBe(null)
     })
-  })
 
-  test('should throw error when delete user faill', async () => {
-    await expect(_repo.delete(null as unknown as number)).rejects.toThrow(
-      'id required for delete.'
-    )
+    test('should throw error when delete user faill', async () => {
+      await expect(_repo.delete(null as unknown as number)).rejects.toThrow(
+        'id required for delete.'
+      )
+    })
   })
 
   describe('Get user by id', () => {
