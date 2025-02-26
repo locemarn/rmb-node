@@ -20,11 +20,16 @@ export class UserRepository {
     }
   }
 
-  async createUser(user: UserEntity): Promise<UserEntity | null> {
-    if (!user.username || !user.email || !user.password) {
-      throw new Error('Invalid user data.')
+  async createUser(user: UserEntity): Promise<UserEntity> {
+    try {
+      if (!user.username || !user.email || !user.password) {
+        throw new Error('Invalid user data.')
+      }
+      return await this._repository.create(user)
+    } catch (error) {
+      const err = error as Error
+      throw new InvalidInputErrors(err.message)
     }
-    return await this._repository.create(user)
   }
 
   async updateUser(id: number, user: UserEntity): Promise<UserEntity | null> {

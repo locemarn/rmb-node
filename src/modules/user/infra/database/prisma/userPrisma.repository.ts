@@ -22,7 +22,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     }
   }
 
-  async create(user: UserEntity): Promise<UserEntity | null> {
+  async create(user: UserEntity): Promise<UserEntity> {
     try {
       if (!user.username || !user.email || !user.password) {
         throw new Error('Invalid user data.')

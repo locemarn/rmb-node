@@ -1,7 +1,7 @@
-import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
-import { MockUserRepository } from '../../infra/repository/mockUsers.repository'
-import { UserRepository } from '../../infra/repository/user.repository'
-import { GetUsersUseCase } from './getUsers.usecase'
+import { UserRepositoryInterface } from '../../../domain/repository/userRepository.interface'
+import { MockUserRepository } from '../../../infra/repository/mockUsers.repository'
+import { UserRepository } from '../../../infra/repository/user.repository'
+import { GetUsersUseCase } from '../getUsers.usecase'
 
 describe('GetUsersUseCase', () => {
   let repo: UserRepositoryInterface
