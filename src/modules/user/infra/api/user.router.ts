@@ -13,5 +13,8 @@ userRouter
   .post(async (req: Request, res: Response) => {
     await userController.createUser(req, res)
   })
+userRouter.route('/:id').patch(async (req: Request, res: Response) => {
+  await userController.updateUser(req, res)
+})
 
 export default userRouter

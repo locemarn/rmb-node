@@ -37,6 +37,7 @@ export class UserRepository {
     if (!user.username || !user.email || !user.password) {
       throw new Error('Invalid user data.')
     }
+    console.log('Updating user  with id:', id)
     return await this._repository.update(id, user)
   }
 
