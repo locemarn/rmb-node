@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Request, Response } from 'express'
 import { GetUsersUseCase } from '../../app/usecases/getUsers.usecase'
 import { UserRepository } from '../repository/user.repository'
