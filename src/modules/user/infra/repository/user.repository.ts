@@ -9,7 +9,7 @@ export class UserRepository {
     this._repository = repository
   }
 
-  async getAllUsers(): Promise<UserEntity[]> {
+  async getAllUsers(): Promise<Omit<UserEntity, 'password'>[]> {
     try {
       const users = await this._repository.getUsers()
       return users

@@ -19,7 +19,7 @@ describe('DeleteUsersUseCase', () => {
     jest.clearAllMocks()
   })
 
-  test('should return all users', async () => {
+  test('should delete an user', async () => {
     const userId = 1
     const sut = await deleteUserUseCase.execute(userId)
     expect(sut).not.toBeNull()

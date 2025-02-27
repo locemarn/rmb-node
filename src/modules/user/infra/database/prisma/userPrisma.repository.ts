@@ -11,9 +11,14 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     this._prisma = prisma
   }
 
-  async getUsers(): Promise<UserEntity[]> {
+  async getUsers(): Promise<Omit<UserEntity, 'password'>[]> {
     try {
-      const users = await prisma.user.findMany({})
+      const users = await prisma.user.findMany({
+        omit: {
+          password: true,
+        },
+      })
+
       return users
     } catch (error) {
       // console.error('Error fetching users:', error)

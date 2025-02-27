@@ -32,7 +32,6 @@ describe('UpdateUsersUseCase', () => {
     expect(sut?.id).toEqual(1)
     expect(sut?.username).toBe(user.username)
     expect(sut?.email).toBe(user.email)
-    expect(sut?.password).toBe(user.password)
     expect(sut?.role).toBe(user.role)
     expect(sut?.id).toBeDefined()
     expect(sut?.updated_at).toBeInstanceOf(Date)

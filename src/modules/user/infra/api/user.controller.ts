@@ -6,6 +6,7 @@ import { UserPrismaRepository } from '../database/prisma/userPrisma.repository'
 import { CreateUserUseCase } from '../../app/usecases/createUser.usecase'
 import { UserEntity } from '../../domain/entity/user.entity'
 import { UpdateUserUseCase } from '../../app/usecases/updateUser.usecase'
+import { encryptHash } from '../../../../utils/libs/jwt'
 
 export class UserController {
   private _prismaRepo: UserRepositoryInterface
@@ -36,12 +37,13 @@ export class UserController {
 
   async createUser(req: Request, res: Response): Promise<Response> {
     try {
-      const user = {
+      const { password } = req.body as UserEntity
+      const userId = encryptHash(password)
+      const user: UserEntity = {
         ...req.body,
+        id: userId,
       } as UserEntity
-
       const response = await this._createUserUseCase.execute(user)
-      console.log('response', response)
       return res.status(201).json({ response })
     } catch (error) {
       console.log('error', error)
@@ -59,10 +61,7 @@ export class UserController {
       const user = {
         ...req.body,
       } as UserEntity
-
       const response = await this._updateUserUseCase.execute(id, user)
-
-      console.log('response', response)
       return res.status(200).json({ response })
     } catch (error) {
       return res.status(500).json({
@@ -77,8 +76,6 @@ export class UserController {
     try {
       const id = parseInt(req.params.id)
       const response = await this._userRepository.deleteUser(id)
-
-      console.log('response', response)
       return res.status(200).json({ response })
     } catch (error) {
       return res.status(500).json({
@@ -93,8 +90,6 @@ export class UserController {
     try {
       const id = parseInt(req.params.id)
       const response = await this._userRepository.getUserById(id)
-
-      console.log('response', response)
       return res.status(200).json({ response })
     } catch (error) {
       const err = error as Error
