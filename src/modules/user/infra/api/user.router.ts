@@ -13,8 +13,16 @@ userRouter
   .post(async (req: Request, res: Response) => {
     await userController.createUser(req, res)
   })
-userRouter.route('/:id').patch(async (req: Request, res: Response) => {
-  await userController.updateUser(req, res)
-})
+userRouter
+  .route('/:id')
+  .patch(async (req: Request, res: Response) => {
+    await userController.updateUser(req, res)
+  })
+  .delete(async (req: Request, res: Response) => {
+    await userController.deleteUser(req, res)
+  })
+  .get(async (req: Request, res: Response) => {
+    await userController.getUserById(req, res)
+  })
 
 export default userRouter

@@ -42,7 +42,7 @@ export class UserController {
 
       const response = await this._createUserUseCase.execute(user)
       console.log('response', response)
-      return res.status(200).json({ response })
+      return res.status(201).json({ response })
     } catch (error) {
       console.log('error', error)
       return res.status(500).json({
@@ -69,6 +69,41 @@ export class UserController {
         error: true,
         message: 'Something went wrong!',
         errorMessage: error,
+      })
+    }
+  }
+
+  async deleteUser(req: Request, res: Response): Promise<Response> {
+    try {
+      const id = parseInt(req.params.id)
+      const response = await this._userRepository.deleteUser(id)
+
+      console.log('response', response)
+      return res.status(200).json({ response })
+    } catch (error) {
+      return res.status(500).json({
+        error: true,
+        message: 'Something went wrong!',
+        errorMessage: error,
+      })
+    }
+  }
+
+  async getUserById(req: Request, res: Response): Promise<Response> {
+    try {
+      const id = parseInt(req.params.id)
+      const response = await this._userRepository.getUserById(id)
+
+      console.log('response', response)
+      return res.status(200).json({ response })
+    } catch (error) {
+      const err = error as Error
+
+      return res.status(500).json({
+        error: true,
+        message: err.message,
+        errorMessage: err.name,
+        stack: err.stack,
       })
     }
   }

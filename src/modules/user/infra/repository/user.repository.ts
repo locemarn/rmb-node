@@ -46,9 +46,9 @@ export class UserRepository {
     return await this._repository.delete(id)
   }
 
-  async getUserById(id: number): Promise<UserEntity | null | string> {
+  async getUserById(id: number): Promise<UserEntity> {
     if (!id) throw new Error('Invalid user id.')
     const user = await this._repository.getUserById(id)
-    return user as UserEntity
+    return user
   }
 }

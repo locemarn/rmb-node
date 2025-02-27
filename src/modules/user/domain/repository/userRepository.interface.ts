@@ -5,5 +5,5 @@ export interface UserRepositoryInterface {
   create(user: UserEntity): Promise<UserEntity>
   update(id: number, user: UserEntity): Promise<UserEntity | null>
   delete(id: number): Promise<UserEntity | null>
-  getUserById(id: number): Promise<UserEntity | null | string>
+  getUserById(id: number): Promise<UserEntity>
 }

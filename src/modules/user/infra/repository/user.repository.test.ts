@@ -112,9 +112,9 @@ describe('UserRepository', () => {
       })
     })
 
-    test('should return null when user not found by id', async () => {
+    test('should return undefined when user not found by id', async () => {
       const sut = await _repo.getUserById(2)
-      expect(sut).toBe(null)
+      expect(sut).toBeUndefined()
     })
   })
 })
