@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { UserEntity } from '../../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../../domain/repository/userRepository.interface'
 import prisma from './client'
-import { InvalidInputErrors } from '../../../../../utils/fixtures/errors/invalidInputErrors'
+import { ResponseError } from '../../../../../utils/fixtures/errors/responseError'
 
 export class UserPrismaRepository implements UserRepositoryInterface {
   _prisma: PrismaClient
@@ -18,11 +18,11 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     } catch (error) {
       // console.error('Error fetching users:', error)
       const err = error as Error
-      throw new InvalidInputErrors(err.message)
+      throw new ResponseError(err.message)
     }
   }
 
-  async create(user: UserEntity): Promise<UserEntity | null> {
+  async create(user: UserEntity): Promise<UserEntity> {
     try {
       if (!user.username || !user.email || !user.password) {
         throw new Error('Invalid user data.')
@@ -39,7 +39,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     } catch (error: unknown) {
       const err = error as Error
       // console.error('Error creating user:', err.message)
-      throw new InvalidInputErrors(err.message)
+      throw new ResponseError(err.message)
     }
   }
 
@@ -60,7 +60,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     } catch (error: unknown) {
       // console.error('Error updating user:')
       const err = error as Error
-      throw new InvalidInputErrors(err.message)
+      throw new ResponseError(err.message)
     }
   }
 
@@ -73,11 +73,11 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       return user
     } catch (error) {
       const err = error as Error
-      throw new InvalidInputErrors(err.message)
+      throw new ResponseError(err.message)
     }
   }
 
-  async getUserById(id: number): Promise<UserEntity | null | string> {
+  async getUserById(id: number): Promise<UserEntity> {
     try {
       if (!id) throw new Error('Invalid user id.')
       const user = await this._prisma.user.findUnique({
@@ -86,9 +86,9 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       if (!user) throw new Error('Invalid user id.')
       return user
     } catch (error) {
-      // console.error('Error fetching user by id:')
+      console.error('UserPrismaRepository - Error fetching user by id:')
       const err = error as Error
-      throw new InvalidInputErrors(err.message)
+      throw new ResponseError(err.message)
     }
   }
 }

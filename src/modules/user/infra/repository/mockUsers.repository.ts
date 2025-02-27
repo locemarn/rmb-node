@@ -50,11 +50,8 @@ export class MockUserRepository implements UserRepositoryInterface {
     }
     return Promise.resolve(deletedUser) as unknown as Promise<UserEntity>
   }
-  async getUserById(id: number): Promise<UserEntity | null> {
-    const userFounded = {
-      ...mockUserResponse,
-    }
-    if (id !== userFounded.id) return null
+  async getUserById(_id: number): Promise<UserEntity> {
+    const userFounded = this.users.find((user) => user.id === _id)
     return Promise.resolve(userFounded) as unknown as Promise<UserEntity>
   }
 }

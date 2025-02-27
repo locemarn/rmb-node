@@ -51,7 +51,7 @@ describe('UserPrismaRepository', () => {
   describe('Create user', () => {
     test('create user', async () => {
       prismaMock.user.create.mockResolvedValue(mockUserResponse)
-      const sut = (await _repo.create(mockUser))!
+      const sut = await _repo.create(mockUser)
       expect(sut.id).toBeGreaterThan(0)
       expect(sut.created_at).toBeInstanceOf(Date)
       expect(sut.updated_at).toBeInstanceOf(Date)
