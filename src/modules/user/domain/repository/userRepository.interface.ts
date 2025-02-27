@@ -6,4 +6,5 @@ export interface UserRepositoryInterface {
   update(id: number, user: UserEntity): Promise<UserEntity | null>
   delete(id: number): Promise<UserEntity | null>
   getUserById(id: number): Promise<UserEntity>
+  getUserByEmail(email: string): Promise<UserEntity>
 }

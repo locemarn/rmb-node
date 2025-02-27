@@ -54,4 +54,9 @@ export class MockUserRepository implements UserRepositoryInterface {
     const userFounded = this.users.find((user) => user.id === _id)
     return Promise.resolve(userFounded) as unknown as Promise<UserEntity>
   }
+
+  async getUserByEmail(_email: string): Promise<UserEntity> {
+    const userFounded = this.users.find((user) => user.email === _email)
+    return Promise.resolve(userFounded) as unknown as Promise<UserEntity>
+  }
 }

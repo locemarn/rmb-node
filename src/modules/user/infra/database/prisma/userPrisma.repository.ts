@@ -96,4 +96,19 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       throw new ResponseError(err.message)
     }
   }
+
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    try {
+      if (!email) throw new Error('Invalid email.')
+      const user = await this._prisma.user.findUnique({
+        where: { email },
+      })
+      if (!user) throw new Error('User not found with this email.')
+      return user
+    } catch (error) {
+      console.error('UserPrismaRepository - Error fetching user by email:')
+      const err = error as Error
+      throw new ResponseError(err.message)
+    }
+  }
 }

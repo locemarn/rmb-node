@@ -22,6 +22,7 @@ export class UserRepository {
 
   async createUser(user: UserEntity): Promise<UserEntity> {
     try {
+      console.log('password length: ', user.password.length)
       if (!user.username || !user.email || !user.password) {
         throw new Error('Invalid user data.')
       }
@@ -49,6 +50,12 @@ export class UserRepository {
   async getUserById(id: number): Promise<UserEntity> {
     if (!id) throw new Error('Invalid user id.')
     const user = await this._repository.getUserById(id)
+    return user
+  }
+
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    if (!email) throw new Error('Invalid email.')
+    const user = await this._repository.getUserByEmail(email)
     return user
   }
 }

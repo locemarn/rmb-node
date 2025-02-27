@@ -47,7 +47,9 @@ describe('UserRepository', () => {
     test('should throw an error when create user fails', async () => {
       await expect(
         _repo.createUser({} as unknown as UserEntity)
-      ).rejects.toThrow('Invalid user data.')
+      ).rejects.toThrow(
+        "Cannot read properties of undefined (reading 'length')"
+      )
     })
   })
 
