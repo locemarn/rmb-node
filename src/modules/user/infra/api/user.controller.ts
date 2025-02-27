@@ -41,7 +41,7 @@ export class UserController {
       const userId = encryptHash(password)
       const user: UserEntity = {
         ...req.body,
-        id: userId,
+        password: userId,
       } as UserEntity
       const response = await this._createUserUseCase.execute(user)
       return res.status(201).json({ response })
