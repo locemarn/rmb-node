@@ -2,6 +2,7 @@ import express, { NextFunction, Response, Request } from 'express'
 const app = express()
 import config from '../config'
 import userRouter from '../modules/user/infra/api/user.router'
+import authRouter from '../modules/auth/infra/api/login.router'
 
 const prefixRoute = config.route.prefix
 
@@ -17,6 +18,7 @@ app.get('/', (req: Request, res: Response): any => {
 
 // Routes
 app.use(`${prefixRoute}/users`, userRouter)
+app.use(`${prefixRoute}/auth/login`, authRouter)
 
 // check errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
