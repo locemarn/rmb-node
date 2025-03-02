@@ -23,7 +23,7 @@ app.use(`${prefixRoute}/auth/login`, authRouter)
 // check errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack)
-  res.status(500).send({ error: true, message: 'Something went wrong!' })
+  res.status(500).send({ error: true, message: err })
   next(err)
 })
 

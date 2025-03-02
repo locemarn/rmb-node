@@ -18,41 +18,41 @@ services:
       timeout: 2s
       retries: 20
 
-  server:
-    container_name: server
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '${PORT}:${PORT}'
-    stdin_open: true
-    tty: true # Keeps the container running for debugging
-    depends_on:
-      postgres_db:
-        condition: service_healthy
-    env_file:
-      - .env
-    networks:
-      - prisma-network
+  # server:
+  #   container_name: server
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '${PORT}:${PORT}'
+  #   stdin_open: true
+  #   tty: true # Keeps the container running for debugging
+  #   depends_on:
+  #     postgres_db:
+  #       condition: service_healthy
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - prisma-network
 
-  prisma-studio:
-    image: node:lts-alpine3.17
-    container_name: prisma-studio
-    working_dir: /usr/src/app
-    volumes:
-      - .:/usr/src/app
-    command: npx prisma studio --port ${PRISMA_STUDIO_PORT} --browser none
-    ports:
-      - '${PRISMA_STUDIO_PORT}:${PRISMA_STUDIO_PORT}'
-    env_file:
-      - .env
-    networks:
-      - prisma-network
-    depends_on:
-      postgres_db:
-        condition: service_healthy
-      server:
-        condition: service_started
+  # prisma-studio:
+  #   image: node:lts-alpine3.17
+  #   container_name: prisma-studio
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - .:/usr/src/app
+  #   command: npx prisma studio --port ${PRISMA_STUDIO_PORT} --browser none
+  #   ports:
+  #     - '${PRISMA_STUDIO_PORT}:${PRISMA_STUDIO_PORT}'
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - prisma-network
+  #   depends_on:
+  #     postgres_db:
+  #       condition: service_healthy
+  #     server:
+  #       condition: service_started
 
 networks:
   prisma-network:

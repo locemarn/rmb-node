@@ -54,10 +54,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       const updatedUser = await this._prisma.user.update({
         where: { id },
         data: {
-          username: user.username,
-          email: user.email,
-          password: user.password,
-          role: user.role,
+          ...user,
           updated_at: new Date(),
         },
       })
@@ -91,7 +88,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       if (!user) throw new Error('Invalid user id.')
       return user
     } catch (error) {
-      console.error('UserPrismaRepository - Error fetching user by id:')
+      // console.error('UserPrismaRepository - Error fetching user by id:')
       const err = error as Error
       throw new ResponseError(err.message)
     }
@@ -106,7 +103,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
       if (!user) throw new Error('User not found with this email.')
       return user
     } catch (error) {
-      console.error('UserPrismaRepository - Error fetching user by email:')
+      // console.error('UserPrismaRepository - Error fetching user by email:')
       const err = error as Error
       throw new ResponseError(err.message)
     }

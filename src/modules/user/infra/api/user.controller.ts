@@ -27,10 +27,13 @@ export class UserController {
       const response = await this._getUsersUseCase.execute()
       return res.status(200).json({ response })
     } catch (error) {
+      const err = error as Error
+
       return res.status(500).json({
         error: true,
-        message: 'Something went wrong!',
-        errorMessage: error,
+        message: err.message,
+        errorMessage: err.name,
+        stack: err.stack,
       })
     }
   }
@@ -46,11 +49,13 @@ export class UserController {
       const response = await this._createUserUseCase.execute(user)
       return res.status(201).json({ response })
     } catch (error) {
-      console.log('error', error)
+      const err = error as Error
+
       return res.status(500).json({
         error: true,
-        message: 'Something went wrong!',
-        errorMessage: error,
+        message: err.message,
+        errorMessage: err.name,
+        stack: err.stack,
       })
     }
   }
@@ -64,10 +69,13 @@ export class UserController {
       const response = await this._updateUserUseCase.execute(id, user)
       return res.status(200).json({ response })
     } catch (error) {
+      const err = error as Error
+
       return res.status(500).json({
         error: true,
-        message: 'Something went wrong!',
-        errorMessage: error,
+        message: err.message,
+        errorMessage: err.name,
+        stack: err.stack,
       })
     }
   }
@@ -78,10 +86,13 @@ export class UserController {
       const response = await this._userRepository.deleteUser(id)
       return res.status(200).json({ response })
     } catch (error) {
+      const err = error as Error
+
       return res.status(500).json({
         error: true,
-        message: 'Something went wrong!',
-        errorMessage: error,
+        message: err.message,
+        errorMessage: err.name,
+        stack: err.stack,
       })
     }
   }
