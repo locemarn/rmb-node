@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { Router, Response, Request } from 'express'
 import { LoginController } from './login.controller'
 

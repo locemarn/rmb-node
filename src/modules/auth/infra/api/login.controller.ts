@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+ 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+ 
+ 
 import { Request, Response } from 'express'
 import { UserRepositoryInterface } from '../../../user/domain/repository/userRepository.interface'
 import { UserPrismaRepository } from '../../../user/infra/database/prisma/userPrisma.repository'

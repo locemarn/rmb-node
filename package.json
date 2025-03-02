@@ -14,7 +14,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "prepare": "husky install",
-    "check-dependencies": "npx npm-check-updates -u"
+    "check-dependencies": "npx npm-check-updates -u",
+    "db:deploy": "npx prisma migrate deploy && npx prisma db push && npx prisma generate"
   },
   "lint-staged": {
     "**/?(*.)+(spec|test).{ts}": [
