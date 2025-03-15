@@ -50,7 +50,6 @@ export class UserPrismaRepository implements UserRepositoryInterface {
 
   async update(id: number, user: UserEntity): Promise<UserEntity | null> {
     try {
-      console.log('user update', user)
       if (!id) throw new Error('id required for update.')
       const updatedUser = await this._prisma.user.update({
         where: { id },
@@ -59,10 +58,8 @@ export class UserPrismaRepository implements UserRepositoryInterface {
           updated_at: new Date(),
         },
       })
-      console.log('updatedUser', updatedUser)
       return updatedUser
     } catch (error: unknown) {
-      // console.error('Error updating user:')
       const err = error as Error
       throw new ResponseError(err.message)
     }
