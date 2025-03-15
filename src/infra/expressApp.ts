@@ -4,8 +4,12 @@ import config from '../config'
 import userRouter from '../modules/user/infra/api/user.router'
 import authRouter from '../modules/auth/infra/api/login.router'
 import cors from 'cors'
+import { graphqlHTTP } from 'express-graphql'
+import { Resolvers } from '../utils/libs/graphql/resolvers'
+import { UserSchema } from '../utils/libs/graphql/schemas'
 
 const prefixRoute = config.route.prefix
+const graphqlPrefixRoute = config.route.graphqlPrefix
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -21,6 +25,14 @@ app.get('/', (req: Request, res: Response): any => {
 // Routes
 app.use(`${prefixRoute}/users`, userRouter)
 app.use(`${prefixRoute}/auth/login`, authRouter)
+app.use(
+  `${graphqlPrefixRoute}/users`,
+  graphqlHTTP({
+    schema: UserSchema,
+    rootValue: Resolvers,
+    graphiql: true,
+  })
+)
 
 // check errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

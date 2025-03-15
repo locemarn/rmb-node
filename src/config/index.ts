@@ -14,6 +14,7 @@ const config = {
   },
   route: {
     prefix: '/api/v1',
+    graphqlPrefix: '/api/v1/graphql',
   },
   db: {
     host: process.env.DB_HOST,
