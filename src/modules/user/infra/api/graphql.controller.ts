@@ -21,14 +21,13 @@ export class GraphqlUserController {
     this._createUserUseCase = new CreateUserUseCase(this._userRepository)
     this._updateUserUseCase = new UpdateUserUseCase(this._userRepository)
   }
-  async getUsers(): Promise<Omit<UserEntity, 'password'>[] | null> {
+  async getUsers(): Promise<Omit<UserEntity, 'password'>[] | string | null> {
     try {
       const response = await this._getUsersUseCase.execute()
       return response
     } catch (error) {
       const err = error as Error
-      console.log('err', err)
-      return null
+      return err.message
     }
   }
 
@@ -46,7 +45,6 @@ export class GraphqlUserController {
       return response
     } catch (error) {
       const err = error as Error
-      console.log('err ---->', err)
       return err.message
     }
   }

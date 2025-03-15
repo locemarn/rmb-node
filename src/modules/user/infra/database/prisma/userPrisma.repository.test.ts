@@ -35,7 +35,6 @@ describe('UserPrismaRepository', () => {
     test('get all users', async () => {
       prismaMock.user.findMany.mockResolvedValue([mockUserResponse])
       const sut = await _repo.getUsers()
-      // console.log('sut', sut)
       expect(sut).toBeInstanceOf(Array)
       expect(sut.length).toBeGreaterThan(0)
     })

@@ -7,7 +7,7 @@ const config = tseslint.config(
   ...tseslint.configs.stylisticTypeChecked,
   // ...tseslint.configs.recommended,
   {
-    ignores: ["dist/**/*", "eslint.config.mjs", "node_modules/**/*"],
+    ignores: ["dist/**/*", "eslint.config.mjs", "node_modules/**/*", "coverage/**/*"],
   },
   {
     languageOptions: {
