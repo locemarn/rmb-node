@@ -1,7 +1,5 @@
- 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
- 
- 
+
 import { Request, Response } from 'express'
 import { UserRepositoryInterface } from '../../../user/domain/repository/userRepository.interface'
 import { UserPrismaRepository } from '../../../user/infra/database/prisma/userPrisma.repository'
@@ -30,12 +28,16 @@ export class LoginController {
       const isValidPassword = comparePasswords(password, user.password)
       if (!isValidPassword) throw new Error('Invalid password.')
 
-      const token = generateToken(user.email)
+      const { token, message } = generateToken(user.email)
 
-      return res.status(200).json({ response: token })
+      console.log('login ok', token)
+
+      return res.status(200).json({ token, user, message })
     } catch (error) {
       console.log(error)
-      return res.status(400).json({ error: error, message: '' })
+      return res
+        .status(400)
+        .json({ error: error, message: 'Error when login user.' })
     }
   }
 }
