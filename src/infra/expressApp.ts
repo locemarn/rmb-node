@@ -3,11 +3,13 @@ const app = express()
 import config from '../config'
 import userRouter from '../modules/user/infra/api/user.router'
 import authRouter from '../modules/auth/infra/api/login.router'
+import cors from 'cors'
 
 const prefixRoute = config.route.prefix
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.get('/', (req: Request, res: Response): any => {

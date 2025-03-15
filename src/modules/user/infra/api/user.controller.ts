@@ -63,8 +63,12 @@ export class UserController {
   async updateUser(req: Request, res: Response): Promise<Response> {
     try {
       const id = parseInt(req.params.id)
+      const { username, email, password, role } = req.body as UserEntity
       const user = {
-        ...req.body,
+        username,
+        email,
+        password: encryptHash(password),
+        role,
       } as UserEntity
       const response = await this._updateUserUseCase.execute(id, user)
       return res.status(200).json({ response })
