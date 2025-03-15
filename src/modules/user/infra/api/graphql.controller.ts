@@ -45,7 +45,6 @@ export class GraphqlUserController {
       return response
     } catch (error) {
       const err = error as Error
-      console.log('err ---->', err)
       return err.message
     }
   }
