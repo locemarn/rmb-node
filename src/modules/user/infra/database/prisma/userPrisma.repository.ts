@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import { UserEntity } from '../../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../../domain/repository/userRepository.interface'
 import prisma from './client'
@@ -41,10 +41,19 @@ export class UserPrismaRepository implements UserRepositoryInterface {
         },
       })
       return createdUser
-    } catch (error: unknown) {
-      const err = error as Error
-      // console.error('Error creating user:', err.message)
-      throw new ResponseError(err.message)
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        // The .code property can be accessed in a type-safe manner
+        if (e.code === 'P2002') {
+          console.log(
+            'There is a unique constraint violation, a new user cannot be created with this email'
+          )
+          throw Error(
+            'There is a unique constraint violation, a new user cannot be created with this email'
+          )
+        }
+      }
+      throw e
     }
   }
 

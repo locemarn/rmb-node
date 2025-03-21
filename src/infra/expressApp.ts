@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { NextFunction, Response, Request } from 'express'
 const app = express()
 import config from '../config'
 import userRouter from '../modules/user/infra/api/user.router'
 import authRouter from '../modules/auth/infra/api/login.router'
 import cors from 'cors'
-import { graphqlHTTP } from 'express-graphql'
+import { createHandler } from 'graphql-http/lib/use/express'
 import { Resolvers } from '../utils/libs/graphql/resolvers'
 import { UserSchema } from '../utils/libs/graphql/schemas'
 
@@ -27,10 +28,13 @@ app.use(`${prefixRoute}/users`, userRouter)
 app.use(`${prefixRoute}/auth/login`, authRouter)
 app.use(
   `${graphqlPrefixRoute}/users`,
-  graphqlHTTP({
+  createHandler({
     schema: UserSchema,
     rootValue: Resolvers,
-    graphiql: true,
+    formatError: (err) => {
+      console.log('error ---->', err)
+      return err
+    },
   })
 )
 

@@ -24,7 +24,8 @@ export class UserRepository {
     try {
       if (!user.username || !user.email || !user.password || !user.role)
         throw new Error('Invalid user data.')
-      return await this._repository.create(user)
+      const res = await this._repository.create(user)
+      return res
     } catch (error) {
       const err = error as Error
       throw new ResponseError(err.message)

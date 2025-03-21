@@ -7,6 +7,12 @@ import { UserEntity } from '../../domain/entity/user.entity'
 import { UpdateUserUseCase } from '../../app/usecases/updateUser.usecase'
 import { encryptHash } from '../../../../utils/libs/jwt'
 
+interface IError {
+  name: string
+  message: string
+  stack?: string
+}
+
 export class GraphqlUserController {
   private _prismaRepo: UserRepositoryInterface
   private _userRepository: UserRepository
@@ -33,8 +39,11 @@ export class GraphqlUserController {
 
   async createUser(
     user: UserEntity
-  ): Promise<Omit<UserEntity, 'password'> | string> {
+  ): Promise<Omit<UserEntity, 'password'> | IError> {
     try {
+      // if (!user.email || !user.password || !user.username) {
+      //   throw new Error('missing data.')
+      // }
       const { password } = user
       const userId = encryptHash(password)
       const newUser: UserEntity = {
@@ -42,10 +51,14 @@ export class GraphqlUserController {
         password: userId,
       } as UserEntity
       const response = await this._createUserUseCase.execute(newUser)
+      console.log('response --->', response)
       return response
     } catch (error) {
       const err = error as Error
-      return err.message
+      console.log('GraphqlUserController err.name', err.name)
+      console.log('GraphqlUserController err.message', err.message)
+      console.log('GraphqlUserController err.stack', err.stack)
+      return err
     }
   }
 
@@ -77,6 +90,7 @@ export class GraphqlUserController {
   async deleteUser(
     id: number
   ): Promise<Omit<UserEntity, 'password'> | string | null> {
+    console.log('deleteUser id', id)
     if (!id) throw new Error('User id must be provide.')
     try {
       const response = await this._userRepository.deleteUser(id)
