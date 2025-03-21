@@ -30,4 +30,15 @@ model User {
   role       Role
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
+  posts      Post[]   @relation("UserPosts")
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  title      String   @db.VarChar(255)
+  content    String   @db.Text
+  author     User     @relation(fields: [authorId], references: [id], name: "UserPosts")
+  authorId   Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
 }
