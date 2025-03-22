@@ -4,8 +4,16 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLInt,
+  GraphQLString,
 } from 'graphql'
-import { UserType, InputCreateUser, InputUpdateUser } from './types'
+import {
+  UserType,
+  InputCreateUser,
+  InputUpdateUser,
+  PostType,
+  InputCreatePost,
+  InputUpdatePost,
+} from './types'
 
 export const UserSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -43,6 +51,56 @@ export const UserSchema = new GraphQLSchema({
         type: UserType,
         args: {
           id: { type: GraphQLInt },
+        },
+      },
+    },
+  }),
+})
+
+export const PostSchema = new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: 'Query',
+    fields: {
+      getPosts: { type: new GraphQLList(new GraphQLNonNull(PostType)) },
+    },
+  }),
+  mutation: new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+      createPost: {
+        type: PostType,
+        args: {
+          post: {
+            type: InputCreatePost,
+          },
+        },
+      },
+      updatePost: {
+        type: PostType,
+        args: {
+          post: {
+            type: InputUpdatePost,
+          },
+        },
+      },
+      getPostById: {
+        type: PostType,
+        args: {
+          id: { type: GraphQLInt },
+        },
+      },
+
+      deletePost: {
+        type: PostType,
+        args: {
+          id: { type: GraphQLInt },
+        },
+      },
+
+      getPostsByTitle: {
+        type: new GraphQLList(new GraphQLNonNull(PostType)),
+        args: {
+          title: { type: GraphQLString },
         },
       },
     },

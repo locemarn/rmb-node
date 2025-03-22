@@ -73,3 +73,34 @@ export const InputUpdateUser = new GraphQLInputObjectType({
     },
   },
 })
+
+export const PostType = new GraphQLObjectType({
+  name: 'Post',
+  fields: {
+    id: { type: GraphQLID },
+    title: { type: GraphQLString },
+    content: { type: GraphQLString },
+    author: { type: GraphQLInt },
+    created_at: { type: GraphQLString },
+    updated_at: { type: GraphQLString },
+  },
+})
+
+export const InputCreatePost = new GraphQLInputObjectType({
+  name: 'InputCreatePost',
+  fields: {
+    title: { type: GraphQLString },
+    content: { type: GraphQLString },
+    author: { type: GraphQLInt },
+  },
+})
+
+export const InputUpdatePost = new GraphQLInputObjectType({
+  name: 'InputUpdatePost',
+  fields: {
+    id: { type: GraphQLInt },
+    title: { type: GraphQLString },
+    content: { type: GraphQLString },
+    author: { type: GraphQLInt },
+  },
+})

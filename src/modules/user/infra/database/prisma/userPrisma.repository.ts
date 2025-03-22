@@ -1,8 +1,8 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { UserEntity } from '../../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../../domain/repository/userRepository.interface'
-import prisma from './client'
 import { ResponseError } from '../../../../../utils/fixtures/errors/responseError'
+import prisma from '../../../../../infra/lib/prisma/client'
 
 export class UserPrismaRepository implements UserRepositoryInterface {
   _prisma: PrismaClient
@@ -13,7 +13,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
 
   async getUsers(): Promise<Omit<UserEntity, 'password'>[]> {
     try {
-      const users = await prisma.user.findMany({
+      const users = await this._prisma.user.findMany({
         omit: {
           password: true,
         },

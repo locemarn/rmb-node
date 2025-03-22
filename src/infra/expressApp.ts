@@ -6,8 +6,9 @@ import userRouter from '../modules/user/infra/api/user.router'
 import authRouter from '../modules/auth/infra/api/login.router'
 import cors from 'cors'
 import { createHandler } from 'graphql-http/lib/use/express'
-import { Resolvers } from '../utils/libs/graphql/resolvers'
-import { UserSchema } from '../utils/libs/graphql/schemas'
+import { PostResolvers, UserResolvers } from '../utils/libs/graphql/resolvers'
+import { PostSchema, UserSchema } from '../utils/libs/graphql/schemas'
+import postRouter from '../modules/post/infra/api/post.router'
 
 const prefixRoute = config.route.prefix
 const graphqlPrefixRoute = config.route.graphqlPrefix
@@ -16,7 +17,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 app.get('/', (req: Request, res: Response): any => {
   return res.status(200).json({
     message: 'everything works well.',
@@ -26,13 +26,26 @@ app.get('/', (req: Request, res: Response): any => {
 // Routes
 app.use(`${prefixRoute}/users`, userRouter)
 app.use(`${prefixRoute}/auth/login`, authRouter)
+app.use(`${prefixRoute}/posts`, postRouter)
 app.use(
   `${graphqlPrefixRoute}/users`,
   createHandler({
     schema: UserSchema,
-    rootValue: Resolvers,
+    rootValue: UserResolvers,
     formatError: (err) => {
       console.log('error ---->', err)
+      return err
+    },
+  })
+)
+
+app.use(
+  `${graphqlPrefixRoute}/posts`,
+  createHandler({
+    schema: PostSchema,
+    rootValue: PostResolvers,
+    formatError: (err) => {
+      console.log('graphqlPrefixRoute error /posts ---->', err)
       return err
     },
   })
