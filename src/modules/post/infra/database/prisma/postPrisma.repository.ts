@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+ 
+ 
+ 
 import { PrismaClient } from '@prisma/client'
 import { PostEntity } from '../../../domain/entity/post.entity'
 import { PostRepositoryInterface } from '../../../domain/repository/postRepository.interface'
