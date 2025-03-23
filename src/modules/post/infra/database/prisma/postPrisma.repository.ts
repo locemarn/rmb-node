@@ -1,10 +1,7 @@
- 
- 
- 
 import { PrismaClient } from '@prisma/client'
 import { PostEntity } from '../../../domain/entity/post.entity'
 import { PostRepositoryInterface } from '../../../domain/repository/postRepository.interface'
-import prisma from '../../../../../infra/lib/prisma/client'
+import prisma from '../../../../../infra/libs/prisma/client'
 import { ResponseError } from '../../../../../utils/fixtures/errors/responseError'
 
 export class PostPrismaRepository implements PostRepositoryInterface {

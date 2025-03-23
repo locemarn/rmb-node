@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import express, { NextFunction, Response, Request } from 'express'
 const app = express()
-import config from '../config'
+import config from './configs'
 import userRouter from '../modules/user/infra/api/user.router'
 import authRouter from '../modules/auth/infra/api/login.router'
 import cors from 'cors'

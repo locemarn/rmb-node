@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import { UserRepositoryInterface } from '../../../user/domain/repository/userRepository.interface'
 import { UserPrismaRepository } from '../../../user/infra/database/prisma/userPrisma.repository'
 import { UserRepository } from '../../../user/infra/repository/user.repository'
-import { GetUserByEmailUseCase } from '../../../user/app/usecases/getUerByEmail.usecase'
+import { GetUserByEmailUseCase } from '../../../user/application/usecases/getUerByEmail.usecase'
 import { comparePasswords, generateToken } from '../../../../utils/libs/jwt'
 
 export class LoginController {

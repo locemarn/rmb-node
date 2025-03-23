@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
-import { GetUsersUseCase } from '../../app/usecases/getUsers.usecase'
+import { GetUsersUseCase } from '../../application/usecases/getUsers.usecase'
 import { UserRepository } from '../repository/user.repository'
 import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
 import { UserPrismaRepository } from '../database/prisma/userPrisma.repository'
-import { CreateUserUseCase } from '../../app/usecases/createUser.usecase'
+import { CreateUserUseCase } from '../../application/usecases/createUser.usecase'
 import { UserEntity } from '../../domain/entity/user.entity'
-import { UpdateUserUseCase } from '../../app/usecases/updateUser.usecase'
+import { UpdateUserUseCase } from '../../application/usecases/updateUser.usecase'
 import { encryptHash } from '../../../../utils/libs/jwt'
 
 export class UserController {

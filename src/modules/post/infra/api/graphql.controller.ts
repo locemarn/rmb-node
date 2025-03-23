@@ -1,12 +1,12 @@
-import { GetPostsUseCase } from '../../app/usecases/getPosts.usecase'
+import { GetPostsUseCase } from '../../application/usecases/getPosts.usecase'
 import { PostRepository } from '../repository/post.repository'
 import { PostRepositoryInterface } from '../../domain/repository/postRepository.interface'
 import { PostPrismaRepository } from '../database/prisma/postPrisma.repository'
 import { PostEntity } from '../../domain/entity/post.entity'
-import { CreatePostUseCase } from '../../app/usecases/createPost.usecase'
-import { UpdatePostUseCase } from '../../app/usecases/updatePost.usecase'
-import { GetPostByIdUseCase } from '../../app/usecases/getPostById.usecase'
-import { DeletePostUseCase } from '../../app/usecases/deletePost.usecase'
+import { CreatePostUseCase } from '../../application/usecases/createPost.usecase'
+import { UpdatePostUseCase } from '../../application/usecases/updatePost.usecase'
+import { GetPostByIdUseCase } from '../../application/usecases/getPostById.usecase'
+import { DeletePostUseCase } from '../../application/usecases/deletePost.usecase'
 
 interface IError {
   name: string

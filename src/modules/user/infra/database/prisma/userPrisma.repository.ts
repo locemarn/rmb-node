@@ -2,7 +2,7 @@ import { Prisma, PrismaClient } from '@prisma/client'
 import { UserEntity } from '../../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../../domain/repository/userRepository.interface'
 import { ResponseError } from '../../../../../utils/fixtures/errors/responseError'
-import prisma from '../../../../../infra/lib/prisma/client'
+import prisma from '../../../../../infra/libs/prisma/client'
 
 export class UserPrismaRepository implements UserRepositoryInterface {
   _prisma: PrismaClient

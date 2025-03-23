@@ -1,6 +1,6 @@
 import expressApp from './infra/expressApp'
 import dotenv from 'dotenv'
-import config from './config'
+import config from './infra/configs'
 
 dotenv.config()
 

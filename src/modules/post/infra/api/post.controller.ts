@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { PostRepositoryInterface } from '../../domain/repository/postRepository.interface'
 import { PostRepository } from '../repository/post.repository'
-import { GetPostsUseCase } from '../../app/usecases/getPosts.usecase'
+import { GetPostsUseCase } from '../../application/usecases/getPosts.usecase'
 import { PostPrismaRepository } from '../database/prisma/postPrisma.repository'
 
 export class PostController {

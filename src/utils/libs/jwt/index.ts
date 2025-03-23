@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import config from '../../../config'
+import config from '../../../infra/configs'
 
 export function encryptHash(password: string) {
   if (!password) throw new Error('password must be provided')
