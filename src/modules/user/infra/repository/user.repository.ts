@@ -44,17 +44,20 @@ export class UserRepository {
     }
   }
 
-  async deleteUser(id: number): Promise<UserEntity | null> {
+  async deleteUser(id: number): Promise<Omit<UserEntity, 'password'> | null> {
     try {
+      console.log('deleteUser id user repository', id)
       if (!id) throw new Error('id required for delete.')
-      return await this._repository.delete(id)
+      const res = await this._repository.delete(id)
+      console.log('deleteUser res user repository', res)
+      return res
     } catch (error) {
       const err = error as Error
       throw new ResponseError(err.message)
     }
   }
 
-  async getUserById(id: number): Promise<UserEntity> {
+  async getUserById(id: number): Promise<Omit<UserEntity, 'password'> | null> {
     try {
       if (!id) throw new Error('Invalid user id.')
       const user = await this._repository.getUserById(id)

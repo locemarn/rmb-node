@@ -6,6 +6,7 @@ import { CreateUserUseCase } from '../../application/usecases/createUser.usecase
 import { UserEntity } from '../../domain/entity/user.entity'
 import { UpdateUserUseCase } from '../../application/usecases/updateUser.usecase'
 import { encryptHash } from '../../../../utils/libs/jwt'
+import { DeleteUserUseCase } from '../../application/usecases/deleteUser.usecase'
 
 interface IError {
   name: string
@@ -19,6 +20,7 @@ export class GraphqlUserController {
   private _getUsersUseCase: GetUsersUseCase
   private _createUserUseCase: CreateUserUseCase
   private _updateUserUseCase: UpdateUserUseCase
+  private _deleteUserUseCase: DeleteUserUseCase
 
   constructor() {
     this._prismaRepo = new UserPrismaRepository()
@@ -26,6 +28,7 @@ export class GraphqlUserController {
     this._getUsersUseCase = new GetUsersUseCase(this._userRepository)
     this._createUserUseCase = new CreateUserUseCase(this._userRepository)
     this._updateUserUseCase = new UpdateUserUseCase(this._userRepository)
+    this._deleteUserUseCase = new DeleteUserUseCase(this._userRepository)
   }
   async getUsers(): Promise<Omit<UserEntity, 'password'>[] | string | null> {
     try {
@@ -41,9 +44,6 @@ export class GraphqlUserController {
     user: UserEntity
   ): Promise<Omit<UserEntity, 'password'> | IError> {
     try {
-      // if (!user.email || !user.password || !user.username) {
-      //   throw new Error('missing data.')
-      // }
       const { password } = user
       const userId = encryptHash(password)
       const newUser: UserEntity = {
@@ -64,10 +64,10 @@ export class GraphqlUserController {
 
   async updateUser(
     user: UserEntity
-  ): Promise<Omit<UserEntity, 'password'> | string | null> {
+  ): Promise<Omit<UserEntity, 'password'>> {
     if (!user?.id) throw new Error('User id must be provide.')
     try {
-      const hasUser = await this._userRepository.getUserById(user.id)
+      const hasUser = await this._userRepository.getUserById(user.id) as UserEntity
       if (!hasUser) throw new Error(' User not found!')
 
       const updateUser = {
@@ -80,24 +80,22 @@ export class GraphqlUserController {
         user.id,
         updateUser
       )
-      return response
+      return response!
     } catch (error) {
       const err = error as Error
-      return err.message
+      throw err
     }
   }
 
   async deleteUser(
     id: number
   ): Promise<Omit<UserEntity, 'password'> | string | null> {
-    console.log('deleteUser id', id)
     if (!id) throw new Error('User id must be provide.')
     try {
-      const response = await this._userRepository.deleteUser(id)
-      return response
+      return await this._deleteUserUseCase.execute(id)
     } catch (error) {
       const err = error as Error
-      return err.message
+      throw err
     }
   }
 

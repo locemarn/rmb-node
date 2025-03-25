@@ -1,0 +1,45 @@
+enum UserRole {
+  superuser
+  admin
+  reader
+  editor
+  tester
+}
+
+type UserType {
+  id: ID
+  username: String!
+  email: String!
+  password: String!
+  role: UserRole!
+  created_at: String
+  updated_at: String
+  posts: [PostType]
+}
+
+type PostType {
+  id: ID!
+  title: String!
+  content: String!
+  User: UserType!
+  categories: [CategoryType!]
+  created_at: String
+  updated_at: String
+}
+
+type CategoryType {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  posts: [PostType]
+  users: [UserType]
+}
+
+type Mutation {
+  createUser(username: String! email: String! password: String! role: UserRole!): UserType
+  updateUser(id: ID! username: String email: String password: String role: UserRole): UserType
+  deleteUser(id: ID!): UserType
+  getUserById(id: ID!): UserType
+}

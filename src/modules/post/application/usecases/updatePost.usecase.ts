@@ -9,6 +9,6 @@ export class UpdatePostUseCase {
   }
 
   async execute(id: number, input: PostEntity): Promise<PostEntity | null> {
-    return this._repository.updatePost(id, input)
+    return await this._repository.updatePost(id, input)
   }
 }

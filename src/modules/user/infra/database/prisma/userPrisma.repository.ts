@@ -17,9 +17,16 @@ export class UserPrismaRepository implements UserRepositoryInterface {
         omit: {
           password: true,
         },
+        include: {
+          posts: {
+            include: {
+              categories: true,
+            },
+          },
+        },
       })
 
-      return users
+      return users as Omit<UserEntity, 'password'>[]
     } catch (error) {
       // console.error('Error fetching users:', error)
       const err = error as Error
@@ -40,7 +47,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
           role: user.role || 'reader',
         },
       })
-      return createdUser
+      return createdUser as UserEntity
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // The .code property can be accessed in a type-safe manner
@@ -57,7 +64,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     }
   }
 
-  async update(id: number, user: UserEntity): Promise<UserEntity | null> {
+  async update(id: number, user: UserEntity): Promise<UserEntity> {
     try {
       if (!id) throw new Error('id required for update.')
       const updatedUser = await this._prisma.user.update({
@@ -67,34 +74,43 @@ export class UserPrismaRepository implements UserRepositoryInterface {
           updated_at: new Date(),
         },
       })
-      return updatedUser
+      return updatedUser as UserEntity
     } catch (error: unknown) {
       const err = error as Error
       throw new ResponseError(err.message)
     }
   }
 
-  async delete(id: number): Promise<UserEntity | null> {
+  async delete(id: number): Promise<Omit<UserEntity, 'password'> | null> {
     try {
       if (!id) throw new Error('id required for delete.')
-      const user = await this._prisma.user.delete({
-        where: { id },
+      const deleteUser = this._prisma.user.delete({
+        where: { id }
       })
-      return user
+      const deletePosts = this._prisma.post.deleteMany({
+        where: {
+          userId: id,
+        }
+      })
+      const transaction = await this._prisma.$transaction([deletePosts, deleteUser])
+      return transaction[1] as unknown as UserEntity
     } catch (error) {
       const err = error as Error
       throw new ResponseError(err.message)
     }
   }
 
-  async getUserById(id: number): Promise<UserEntity> {
+  async getUserById(id: number): Promise<Omit<UserEntity, 'password'> | null> {
     try {
       if (!id) throw new Error('Invalid user id.')
       const user = await this._prisma.user.findUnique({
+        omit: {
+          password: true,
+        },
         where: { id },
       })
       if (!user) throw new Error('Invalid user id.')
-      return user
+      return user as Omit<UserEntity, 'password'>
     } catch (error) {
       // console.error('UserPrismaRepository - Error fetching user by id:')
       const err = error as Error
@@ -109,11 +125,12 @@ export class UserPrismaRepository implements UserRepositoryInterface {
         where: { email },
       })
       if (!user) throw new Error('User not found with this email.')
-      return user
+      return user as UserEntity
     } catch (error) {
       // console.error('UserPrismaRepository - Error fetching user by email:')
       const err = error as Error
       throw new ResponseError(err.message)
+      throw err
     }
   }
 }

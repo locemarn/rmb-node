@@ -8,7 +8,7 @@ export class DeleteUserUseCase {
     this._repository = repository
   }
 
-  async execute(id: number): Promise<UserEntity | null> {
+  async execute(id: number): Promise<Omit<UserEntity, 'password'> | null> {
     return this._repository.deleteUser(id)
   }
 }

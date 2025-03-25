@@ -1,20 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
-}
-
-enum Role {
-  superuser
-  admin
-  reader
-  editor
-  tester
+  previewFeatures = ["driverAdapters", "relationJoins"]
 }
 
 datasource db {
@@ -30,15 +16,61 @@ model User {
   role       Role
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  posts      Post[]   @relation("UserPosts")
+  posts      Post[]
+
+  @@map("users")
 }
 
 model Post {
+  id                Int                 @id @default(autoincrement())
+  title             String              @db.VarChar(255)
+  content           String
+  published         Boolean             @default(false)
+  userId            Int
+  created_at        DateTime            @default(now()) @db.Timestamp(6)
+  updated_at        DateTime            @default(now()) @db.Timestamp(6)
+  CategoriesToPosts CategoriesToPosts[]
+  comments          Comment[]
+  User              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categories        Category[]          @relation("CategoryToPost")
+
+  @@map("posts")
+}
+
+model CategoriesToPosts {
+  postId     Int
+  categoryId Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  category   Category @relation(fields: [categoryId], references: [id])
+  post       Post     @relation(fields: [postId], references: [id])
+
+  @@id([postId, categoryId])
+}
+
+model Category {
+  id                Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(20)
+  CategoriesToPosts CategoriesToPosts[]
+  posts             Post[]              @relation("CategoryToPost")
+
+  @@map("categories")
+}
+
+model Comment {
   id         Int      @id @default(autoincrement())
-  title      String   @db.VarChar(255)
-  content    String   @db.Text
-  author     User     @relation(fields: [authorId], references: [id], name: "UserPosts")
-  authorId   Int
+  content    String
+  postId     Int?
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
+  Post       Post?    @relation(fields: [postId], references: [id])
+
+  @@map("comments")
+}
+
+enum Role {
+  superuser
+  admin
+  reader
+  editor
+  tester
 }

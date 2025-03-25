@@ -21,6 +21,7 @@ export class PostRepository {
   }
 
   async createPost(post: PostEntity): Promise<PostEntity> {
+    console.log('PostRepository createPost post', post)
     try {
       return await this._repository.create(post)
     } catch (error) {
@@ -30,12 +31,13 @@ export class PostRepository {
   }
 
   async updatePost(id: number, post: PostEntity): Promise<PostEntity | null> {
+    console.log('PostRepository updatePost post', post)
     try {
       if (!id) throw new Error('id required for update.')
       return await this._repository.update(id, post)
     } catch (error) {
       const err = error as Error
-      throw new ResponseError(err.message)
+      throw err
     }
   }
 
@@ -53,10 +55,13 @@ export class PostRepository {
     try {
       if (!id) throw new Error('Invalid user id.')
       const post = await this._repository.getPostById(id)
+      // if (!post) throw new Error('Post not found.')
       return post
     } catch (error) {
       const err = error as Error
-      throw new ResponseError(err.message)
+      console.log('PostRepository getPostById error getPostById', err.message)
+      throw err
+      // throw new ResponseError(err.message)
     }
   }
 

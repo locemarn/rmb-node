@@ -1,7 +1,7 @@
 import { PostEntity } from '../../domain/entity/post.entity'
 import { PostRepository } from '../../infra/repository/post.repository'
 
-export class GetPostsByTitle {
+export class GetPostsByTitleUseCase {
   private _repository: PostRepository
 
   constructor(repository: PostRepository) {

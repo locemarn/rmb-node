@@ -6,6 +6,7 @@ const postRouter = Router()
 const postController = new PostController()
 
 postRouter.route('/').get(async (req, res) => {
+  console.log('getPosts postRouter')
   await postController.getPosts(req, res)
 })
 //   .post(async (req: Request, res: Response) => {

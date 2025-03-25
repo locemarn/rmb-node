@@ -10,6 +10,7 @@ export class PostController {
   private _getPostsUseCase: GetPostsUseCase
   // private _createUserUseCase: CreateUserUseCase
   // private _updateUserUseCase: UpdateUserUseCase
+  
 
   constructor() {
     this._prismaRepo = new PostPrismaRepository()

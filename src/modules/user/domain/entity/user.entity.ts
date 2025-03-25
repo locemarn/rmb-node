@@ -7,7 +7,7 @@ export class UserEntity {
   username: string
   email: string
   password: string
-  role: 'superuser' | 'admin' | 'reader' | 'editor' | 'tester'
+  role: UserRole
   created_at?: Date
   updated_at?: Date
 
@@ -32,4 +32,12 @@ export class UserEntity {
   static createFrom(data: UserEntity): UserEntity {
     return new UserEntity(data)
   }
+}
+
+export enum UserRole {
+  SUPERUSER = 'superuser',
+  ADMIN = 'admin',
+  READER = 'reader',
+  EDITOR = 'editor',
+  TESTER = 'tester',
 }

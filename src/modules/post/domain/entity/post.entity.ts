@@ -6,14 +6,18 @@ export class PostEntity {
   id?: number
   title: string
   content: string
-  author: number
+  authorId: number
+  categories: number[]
+  published: boolean
   created_at?: Date
   updated_at?: Date
 
   private constructor(data: PostEntity) {
     this.title = data.title
     this.content = data.content
-    this.author = data.author
+    this.authorId = data.authorId
+    this.categories = data.categories
+    this.published = data.published
   }
 
   static create(
