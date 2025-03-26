@@ -36,7 +36,6 @@ export class GraphqlPostController {
     this._deletePostUseCase = new DeletePostUseCase(this._postRepository)
   }
   async getPosts(): Promise<PostEntity[]> {
-    console.log('GraphqlPostController getPosts')
     try {
       const response = await this._getPostsUsersUseCase.execute()
       return response
@@ -53,9 +52,6 @@ export class GraphqlPostController {
       return response
     } catch (error) {
       const err = error as Error
-      console.log('GraphqlUserController err.name', err.name)
-      console.log('GraphqlUserController err.message', err.message)
-      console.log('GraphqlUserController err.stack', err.stack)
       return err
     }
   }

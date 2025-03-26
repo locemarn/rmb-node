@@ -3,9 +3,11 @@ import { GraphqlPostController } from '../../../modules/post/infra/api/graphql.c
 import { UserEntity } from '../../../modules/user/domain/entity/user.entity'
 import { GraphqlUserController } from '../../../modules/user/infra/api/graphql.controller'
 import { PostEntity } from '../../../modules/post/domain/entity/post.entity'
+import { CategoryGraphqlController } from '../../../modules/catogory/infra/api/category.graphql.controller'
 
 const graphqlUserController = new GraphqlUserController()
 const graphqlPostController = new GraphqlPostController()
+const graphqlCategoryController = new CategoryGraphqlController()
 
 export const resolvers = {
   Query: {
@@ -17,6 +19,10 @@ export const resolvers = {
       const result = await graphqlUserController.getUsers()
       return result
     },
+    categories: async () => {
+      const result = await graphqlCategoryController.getAllCategories()
+      return result
+    }
   },
   Mutation: {
     createUser: async (parent: unknown, args: UserEntity) => {
@@ -117,6 +123,50 @@ export const resolvers = {
     getPostById: async (parent: unknown, args: { id: number }) => {
       try {
         return await graphqlPostController.getPostById(args.id)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+
+    createCategory: async (parent: unknown, args: { name: string }) => {
+      try {
+        return await graphqlCategoryController.createCategory(args)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    updateCategory: async (parent: unknown, args: { id: number, name: string }) => {
+      if (!args.id) throw new Error('Category ID must be provided!')
+      try {
+        return await graphqlCategoryController.updateCategory(args)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    deleteCategory: async (parent: unknown, args: { id: number }) => {
+      if (!args.id) throw new Error('Category ID must be provided!')
+      try {
+        return await graphqlCategoryController.deleteCategory(args.id)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    getCategoryById: async (parent: unknown, args: { id: number }) => { 
+      if (!args.id) throw new Error('Category ID must be provided!')
+      try {
+        return await graphqlCategoryController.getCategoryById(args.id)
       } catch (error) {
         const err = error as Error
         throw new GraphQLError(err.message, {

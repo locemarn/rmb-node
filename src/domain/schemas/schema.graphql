@@ -62,6 +62,7 @@ input UpdatePostInput {
 type Query {
   posts: [PostType]
   users: [UserType]
+  categories: [CategoryType]
 }
 
 type Mutation {
@@ -75,4 +76,9 @@ type Mutation {
   deletePost(id: ID!): PostType
   getPostsByTitle(title: String!): [PostType]
   getPostById(id: ID!): PostType
+
+  createCategory(name: String!): CategoryType
+  updateCategory(id: ID! name: String!): CategoryType
+  deleteCategory(id: ID!): CategoryType
+  getCategoryById(id: ID!): CategoryType
 }
