@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { UserEntity } from '../../domain/entity/user.entity'
+import { UserEntity, UserRole } from '../../domain/entity/user.entity'
 import { MockUserRepository } from './mockUsers.repository'
 import { UserRepository } from './user.repository'
 
@@ -30,7 +30,7 @@ describe('UserRepository', () => {
         username: 'test2',
         email: 'test2@email.com',
         password: 'password',
-        role: 'tester',
+        role: UserRole.TESTER,
       }
       const sut = await _repo.createUser(user)
       expect(sut).toMatchObject({
@@ -57,7 +57,7 @@ describe('UserRepository', () => {
         username: 'updated',
         email: 'updated@email.com',
         password: 'password',
-        role: 'tester',
+        role: UserRole.TESTER,
       }
       const sut = await _repo.updateUser(1, user)
       expect(sut).toMatchObject({

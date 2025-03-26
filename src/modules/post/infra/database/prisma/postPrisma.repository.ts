@@ -19,7 +19,6 @@ export class PostPrismaRepository implements PostRepositoryInterface {
           user: true
         }
       })
-      console.log('posts --->', posts)
       return posts as unknown as PostEntity[]
     } catch (error) {
       const err = error as Error

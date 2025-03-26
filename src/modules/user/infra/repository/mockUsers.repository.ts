@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker'
-import { UserEntity } from '../../domain/entity/user.entity'
+import { UserEntity, UserRole } from '../../domain/entity/user.entity'
 import { UserRepositoryInterface } from '../../domain/repository/userRepository.interface'
 
 export const mockUser: UserEntity = {
   username: faker.internet.username(),
   email: faker.internet.email(),
   password: faker.internet.password(),
-  role: 'tester',
+  role: UserRole.TESTER,
 }
 
 export const mockUserResponse: UserEntity = {

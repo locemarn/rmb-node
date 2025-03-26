@@ -9,6 +9,13 @@ export class GetUserByIdUseCase {
   }
 
   async execute(id: number): Promise<UserEntity> {
-    return await this._repository.getUserById(id)
+    try {
+      const user = await this._repository.getUserById(id)
+      if (!user) throw new Error('User not found')
+      return user as UserEntity
+    } catch (error) {
+      const err = error as Error
+      throw err
+    }
   }
 }
