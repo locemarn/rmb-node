@@ -22,7 +22,7 @@ export class GraphqlPostController {
   private _createPostUseCase: CreatePostUseCase
   private _updatePostUseCase: UpdatePostUseCase
   private _getPostByIdUseCase: GetPostByIdUseCase
-  private _getPostByTitleUseCase: GetPostsByTitleUseCase
+  private _getPostsByTitleUseCase: GetPostsByTitleUseCase
   private _deletePostUseCase: DeletePostUseCase
 
   constructor() {
@@ -32,22 +32,24 @@ export class GraphqlPostController {
     this._createPostUseCase = new CreatePostUseCase(this._postRepository)
     this._updatePostUseCase = new UpdatePostUseCase(this._postRepository)
     this._getPostByIdUseCase = new GetPostByIdUseCase(this._postRepository)
-    this._getPostByTitleUseCase = new GetPostsByTitleUseCase(this._postRepository)
+    this._getPostsByTitleUseCase = new GetPostsByTitleUseCase(this._postRepository)
     this._deletePostUseCase = new DeletePostUseCase(this._postRepository)
   }
-  async getPosts(): Promise<PostEntity[] | string | null> {
+  async getPosts(): Promise<PostEntity[]> {
+    console.log('GraphqlPostController getPosts')
     try {
       const response = await this._getPostsUsersUseCase.execute()
       return response
     } catch (error) {
       const err = error as Error
-      return err.message
+      throw err
     }
   }
 
-  async createPost(post: PostEntity): Promise<PostEntity | IError> {
+  async createPost({input}: {input: PostEntity}): Promise<PostEntity | IError> {
+    console.log('GraphqlPostController createPost post', input)
     try {
-      const response = await this._createPostUseCase.execute(post)
+      const response = await this._createPostUseCase.execute(input)
       return response
     } catch (error) {
       const err = error as Error
@@ -58,25 +60,24 @@ export class GraphqlPostController {
     }
   }
 
-  async updatePost(post: PostEntity): Promise<PostEntity | IError> {
-    if (!post?.id) throw new Error('User id must be provide.')
-    console.log('GraphqlPostController updatePost post', post)
+  async updatePost({input}: {input: PostEntity}): Promise<PostEntity | IError> {
+    if (!input?.id) throw new Error('User id must be provide.')
+    console.log('GraphqlPostController updatePost post', input)
     try {
-      const hasPost = await this._getPostByIdUseCase.execute(post.id)
+      const hasPost = await this._getPostByIdUseCase.execute(input.id)
       console.log('GraphqlPostController hasPost', hasPost)
       if (!hasPost) throw new Error('Post not found!')
 
-      const response = await this._updatePostUseCase.execute(post.id, post)
+      const response = await this._updatePostUseCase.execute(input.id, input)
       if (!response) throw new Error('Cannot update the Post.')
       return response
     } catch (error) {
       const err = error as Error
-      console.log('akiiii', err)
-      return err
+      throw err
     }
   }
 
-  async deletePost(id: number): Promise<PostEntity | string | null> {
+  async deletePost({id}: {id: number}): Promise<PostEntity | string | null> {
     if (!id) throw new Error('User id must be provide.')
     try {
       const response = await this._deletePostUseCase.execute(id)
@@ -101,7 +102,7 @@ export class GraphqlPostController {
   async getPostsByTitle(title: string): Promise<PostEntity[] | string | null> {
     if (!title) throw new Error('User id must be provide.')
     try {
-      const response = await this._getPostByTitleUseCase.execute(title)
+      const response = await this._getPostsByTitleUseCase.execute(title)
       return response
     } catch (error) {
       const err = error as Error

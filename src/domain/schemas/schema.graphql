@@ -21,15 +21,42 @@ type PostType {
   id: ID!
   title: String!
   content: String!
-  User: UserType!
-  categories: [CategoryType!]
+  user: UserType!
+  published: Boolean!
+  categories: [CategoryType]
   created_at: String
   updated_at: String
+  categoryPostsConnection: CategoryPostsConnection
 }
 
 type CategoryType {
   id: ID!
   name: String!
+  posts: [PostType]
+}
+
+type CategoryPostsConnection {
+  edges: [CategoryPostsEdge]
+}
+type CategoryPostsEdge {
+  postId: Int!
+  categoryId: Int!
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  userId: ID!
+  published: Boolean!
+  categories: [Int!]!
+}
+
+input UpdatePostInput {
+  id: ID!
+  title: String!
+  content: String!
+  published: Boolean!
+  categories: [Int!]!
 }
 
 type Query {
@@ -42,4 +69,9 @@ type Mutation {
   updateUser(id: ID! username: String email: String password: String role: UserRole): UserType
   deleteUser(id: ID!): UserType
   getUserById(id: ID!): UserType
+
+  createPost(input: CreatePostInput!): PostType
+  updatePost(input: UpdatePostInput!): PostType
+  deletePost(id: ID!): PostType
+  getPostsByTitle(title: String!): [PostType]
 }

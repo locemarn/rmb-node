@@ -1,14 +1,13 @@
 import { Router } from 'express'
-import { PostController } from './post.controller'
+// import { PostController } from './post.controller'
 
 const postRouter = Router()
 
-const postController = new PostController()
+// const postController = new PostController()
 
-postRouter.route('/').get(async (req, res) => {
-  console.log('getPosts postRouter')
-  await postController.getPosts(req, res)
-})
+// postRouter.route('/').get(async (req, res) => {
+//   await postController.getPosts(req, res)
+// })
 //   .post(async (req: Request, res: Response) => {
 //     await postController.createUser(req, res)
 //   })

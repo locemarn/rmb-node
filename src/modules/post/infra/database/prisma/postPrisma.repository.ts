@@ -10,121 +10,108 @@ export class PostPrismaRepository implements PostRepositoryInterface {
   constructor() {
     this._prisma = prisma
   }
-
+  
   async getPosts(): Promise<PostEntity[]> {
     try {
       const posts = await this._prisma.post.findMany({
         include: {
           categories: true,
-          User: true,
-        },
+          user: true
+        }
       })
+      console.log('posts --->', posts)
       return posts as unknown as PostEntity[]
     } catch (error) {
-      if (error instanceof Error) {
-        throw new ResponseError(error.message)
-      } else {
-        throw new ResponseError('An unknown error occurred')
-      }
+      const err = error as Error
+      throw new ResponseError(err.message)
     }
   }
-  
+
   async create(post: PostEntity): Promise<PostEntity> {
     try {
       const createdPost = await this._prisma.post.create({
         data: {
           title: post.title,
           content: post.content,
-          userId: post.authorId,
+          published: post.published,
+          userId: +post.userId,
           categories: {
-            connect: post.categories.map((category) => ({
-              id: category,
-            })),
-          },
+            connect: post.categories.map(id => ({ id: +id }))
+          }
         },
+        include: {
+          categories: true
+        }
       })
       return createdPost as unknown as PostEntity
     } catch (error) {
-      if (error instanceof Error) {
-        throw new ResponseError(error.message)
-      } else {
-        throw new ResponseError('An unknown error occurred')
-      }
+      const err = error as Error
+      throw new ResponseError(err.message)
     }
   }
 
   async update(id: number, post: PostEntity): Promise<PostEntity | null> {
     try {
       const updatedPost = await this._prisma.post.update({
-        where: { id },
+        where: { id: +id },
         data: {
           title: post.title,
           content: post.content,
-          userId: post.authorId,
           published: post.published,
-          updated_at: new Date()
+          categories: {
+            set: post.categories.map(id => ({ id: +id }))
+          }
         },
+        include: {
+          categories: true
+        }
       })
-      if (!updatedPost) throw new Error('Post not found')
       return updatedPost as unknown as PostEntity
     } catch (error) {
-      if (error instanceof Error) {
-        throw new ResponseError(error.message)
-      } else {
-        throw new ResponseError('An unknown error occurred')
-      }
+      const err = error as Error
+      throw new ResponseError(err.message)
     }
   }
 
   async delete(id: number): Promise<PostEntity> {
-    console.log('PostPrismaRepository delete', id)
     try {
       const deletedPost = await this._prisma.post.delete({
-        where: { id },
+        where: { id: +id },
+        include: {
+          categories: true
+        }
       })
       return deletedPost as unknown as PostEntity
     } catch (error) {
-      if (error instanceof Error) {
-        throw new ResponseError(error.message)
-      } else {
-        throw new ResponseError('An unknown error occurred')
-      }
+      const err = error as Error
+      throw err
     }
   }
 
   async getPostById(id: number): Promise<PostEntity> {
-    const post = await this._prisma.post.findUnique({
-      where: { id },
-    })
-    return post as unknown as PostEntity
-  }
-
-  async getPostByTitle(title: string): Promise<PostEntity[]> {
     try {
-      const posts = await this._prisma.post.findMany({
-        where: { title: { contains: title } },
-        select: {
-          id: true,
-          title: true,
-          content: true,
-          published: true,
-          created_at: true,
-          categories: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      })
-      console.log('PostPrismaRepository posts', JSON.stringify(posts, null, 2))
-      const p = posts.map((post) => { 
-        console.log('post', JSON.stringify(post, null, 2))
-        return {
-          ...post,
-          categories: post.categories.map((category) => category.name),
+      const post = await this._prisma.post.findUnique({
+        where: { id: +id },
+        include: {
+          categories: true
         }
       })
-      return p as unknown as PostEntity[]
+      return post as unknown as PostEntity
+    } catch (error) {
+      const err = error as Error
+      throw err
+    }
+  }
+
+  async getPostsByTitle(title: string): Promise<PostEntity[]> {
+    try {
+      const post = await this._prisma.post.findMany({
+        where: { title: { contains: title } },
+        include: {
+          categories: true
+        }
+      })
+      return post as unknown as PostEntity[]
     } catch (error) {
       const err = error as Error
       throw err

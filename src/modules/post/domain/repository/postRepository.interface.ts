@@ -6,5 +6,5 @@ export interface PostRepositoryInterface {
   update(id: number, post: PostEntity): Promise<PostEntity | null>
   delete(id: number): Promise<PostEntity>
   getPostById(id: number): Promise<PostEntity>
-  getPostByTitle(title: string): Promise<PostEntity[]>
+  getPostsByTitle(title: string): Promise<PostEntity[]>
 }

@@ -4,6 +4,7 @@ import { GraphqlPostController } from '../../../modules/post/infra/api/graphql.c
 import { UserEntity } from '../../../modules/user/domain/entity/user.entity'
 // import { UserEntity } from '../../../modules/user/domain/entity/user.entity'
 import { GraphqlUserController } from '../../../modules/user/infra/api/graphql.controller'
+import { PostEntity } from '../../../modules/post/domain/entity/post.entity'
 // import { ApolloServerErrorCode } from '@apollo/server/errors'
 
 const graphqlUserController = new GraphqlUserController()
@@ -175,5 +176,50 @@ export const resolvers = {
         });
       }
     },
+
+    createPost: async (parent: unknown, args: { input: PostEntity }) => {
+      console.log('createPost args', args)
+      try {
+        return await graphqlPostController.createPost(args)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+
+    updatePost: async (parent: unknown, args: { input: PostEntity }) => {
+      console.log('updatePost args', args)
+      try {
+        return await graphqlPostController.updatePost(args)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+
+    deletePost: async (parent: unknown, args: { id: number }) => {
+      if (!args.id) throw new Error('Post ID must be provided!')
+      try {
+        return await graphqlPostController.deletePost(args)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+
+    getPostsByTitle: async (parent: unknown, args: { title: string }) => {
+      try {
+        return await graphqlPostController.getPostsByTitle(args.title)
+      } catch (error) {
+        const err = error as Error
+        throw err
+      }
+    }
   },
 }

@@ -22,36 +22,24 @@ model User {
 }
 
 model Post {
-  id                Int                 @id @default(autoincrement())
-  title             String              @db.VarChar(255)
-  content           String
-  published         Boolean             @default(false)
-  userId            Int
-  created_at        DateTime            @default(now()) @db.Timestamp(6)
-  updated_at        DateTime            @default(now()) @db.Timestamp(6)
-  CategoriesToPosts CategoriesToPosts[]
-  comments          Comment[]
-  User              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categories        Category[]          @relation("CategoryToPost")
+  id         Int        @id @default(autoincrement())
+  title      String     @db.VarChar(255)
+  content    String
+  published  Boolean    @default(false)
+  userId     Int
+  created_at DateTime   @default(now()) @db.Timestamp(6)
+  updated_at DateTime   @default(now()) @db.Timestamp(6)
+  comments   Comment[]
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categories Category[] @relation("CategoryToPost")
 
   @@map("posts")
 }
 
-model CategoriesToPosts {
-  postId     Int
-  categoryId Int
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  category   Category @relation(fields: [categoryId], references: [id])
-  post       Post     @relation(fields: [postId], references: [id])
-
-  @@id([postId, categoryId])
-}
-
 model Category {
-  id                Int                 @id @default(autoincrement())
-  name              String              @db.VarChar(20)
-  CategoriesToPosts CategoriesToPosts[]
-  posts             Post[]              @relation("CategoryToPost")
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(20)
+  posts Post[] @relation("CategoryToPost")
 
   @@map("categories")
 }

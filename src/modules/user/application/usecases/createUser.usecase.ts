@@ -10,7 +10,6 @@ export class CreateUserUseCase {
 
   async execute(input: UserEntity): Promise<UserEntity> {
     try {
-      console.log('input', input)
       return this._repository.createUser(input)
     } catch (error) {
       return { error } as unknown as UserEntity

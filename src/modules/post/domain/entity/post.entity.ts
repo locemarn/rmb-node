@@ -2,12 +2,20 @@ import { randomInt } from 'node:crypto'
 
 type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
+interface CategoryEntity {
+  id: number
+  name: string
+  posts: PostEntity[]
+}
+
+
+
 export class PostEntity {
   id?: number
   title: string
   content: string
-  authorId: number
-  categories: number[]
+  userId: number
+  categories: CategoryEntity[]
   published: boolean
   created_at?: Date
   updated_at?: Date
@@ -15,7 +23,7 @@ export class PostEntity {
   private constructor(data: PostEntity) {
     this.title = data.title
     this.content = data.content
-    this.authorId = data.authorId
+    this.userId = data.userId
     this.categories = data.categories
     this.published = data.published
   }

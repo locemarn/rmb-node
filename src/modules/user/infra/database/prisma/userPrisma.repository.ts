@@ -18,11 +18,7 @@ export class UserPrismaRepository implements UserRepositoryInterface {
           password: true,
         },
         include: {
-          posts: {
-            include: {
-              categories: true,
-            },
-          },
+          posts: true,
         },
       })
 

@@ -46,10 +46,8 @@ export class UserRepository {
 
   async deleteUser(id: number): Promise<Omit<UserEntity, 'password'> | null> {
     try {
-      console.log('deleteUser id user repository', id)
       if (!id) throw new Error('id required for delete.')
       const res = await this._repository.delete(id)
-      console.log('deleteUser res user repository', res)
       return res
     } catch (error) {
       const err = error as Error

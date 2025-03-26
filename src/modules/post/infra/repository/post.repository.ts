@@ -68,7 +68,7 @@ export class PostRepository {
   async getPostsByTitle(title: string): Promise<PostEntity[]> {
     try {
       if (!title) throw new Error('Invalid title.')
-      const post = await this._repository.getPostByTitle(title)
+      const post = await this._repository.getPostsByTitle(title)
       return post
     } catch (error) {
       const err = error as Error
