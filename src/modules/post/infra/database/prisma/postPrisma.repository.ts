@@ -93,7 +93,8 @@ export class PostPrismaRepository implements PostRepositoryInterface {
       const post = await this._prisma.post.findUnique({
         where: { id: +id },
         include: {
-          categories: true
+          categories: true,
+          user: true
         }
       })
       return post as unknown as PostEntity

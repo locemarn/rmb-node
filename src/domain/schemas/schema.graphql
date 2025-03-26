@@ -74,4 +74,5 @@ type Mutation {
   updatePost(input: UpdatePostInput!): PostType
   deletePost(id: ID!): PostType
   getPostsByTitle(title: String!): [PostType]
+  getPostById(id: ID!): PostType
 }
