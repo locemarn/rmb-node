@@ -52,6 +52,9 @@ export class CommentsPrismaRepository implements CommentsRepositoryInterface {
     try {
       const comments = await this._prisma.comment.findMany({
         where: { postId: +postId },
+        include: {
+          response: true
+        },
       })
       return comments as unknown as CommentEntity[]
     } catch (error) {
@@ -63,6 +66,9 @@ export class CommentsPrismaRepository implements CommentsRepositoryInterface {
     try {
       const comment = await this._prisma.comment.findUnique({
         where: { id: +id },
+        include: {
+          response: true,
+        },
       })
       return comment as unknown as CommentEntity
     } catch (error) {

@@ -28,6 +28,7 @@ type PostType {
   published: Boolean!
   categories: [CategoryType]
   comments: [CommentType]
+  response: [ResponseType]
   created_at: String
   updated_at: String
   categoryPostsConnection: CategoryPostsConnection
@@ -70,6 +71,7 @@ type CommentType {
   content: String!
   postId: ID!
   userId: ID!
+  response: [ResponseType]
   created_at: String
   updated_at: String
 }
@@ -84,6 +86,27 @@ input UpdateCommentInput {
   id: ID!
   content: String!
 }
+
+type ResponseType {
+  id: ID!
+  content: String!
+  commentId: ID!
+  userId: ID!
+  created_at: String
+  updated_at: String
+}
+
+input CreateResponseInput {
+  content: String!
+  commentId: ID!
+  userId: ID!
+}
+
+input UpdateResponseInput {
+  id: ID!
+  content: String!
+}
+
 
 # Query
 type Query {
@@ -115,4 +138,10 @@ type Mutation {
   deleteComment(id: ID!): CommentType
   getCommentsByPostId(postId: ID!): [CommentType]
   getCommentById(id: ID!): CommentType
+
+  createResponse(input: CreateResponseInput!): ResponseType
+  updateResponse(input: UpdateResponseInput!): ResponseType
+  deleteResponse(id: ID!): ResponseType
+  getResponsesByCommentId(commentId: ID!): [ResponseType]
+  getResponseById(id: ID!): ResponseType
 }

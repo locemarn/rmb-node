@@ -9,15 +9,15 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique @db.VarChar(50)
-  username   String   @unique @db.VarChar(50)
-  password   String   @db.VarChar(100)
+  id         Int       @id @default(autoincrement())
+  email      String    @unique @db.VarChar(50)
+  username   String    @unique @db.VarChar(50)
+  password   String    @db.VarChar(100)
   role       Role
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  posts      Post[]
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
   comments   Comment[]
+  posts      Post[]
 
   @@map("users")
 }
@@ -46,16 +46,29 @@ model Category {
 }
 
 model Comment {
-  id         Int      @id @default(autoincrement())
+  id         Int               @id @default(autoincrement())
   content    String
   postId     Int
+  created_at DateTime          @default(now()) @db.Timestamp(6)
+  updated_at DateTime          @default(now()) @db.Timestamp(6)
+  userId     Int
+  post       Post              @relation(fields: [postId], references: [id])
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  response   CommentResponse[]
+
+  @@map("comments")
+}
+
+model CommentResponse {
+  id         Int      @id @default(autoincrement())
+  content    String
   userId     Int
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
-  post       Post     @relation(fields: [postId], references: [id])
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  commentId  Int
+  comments   Comment  @relation(fields: [commentId], references: [id])
 
-  @@map("comments")
+  @@map("response")
 }
 
 enum Role {
