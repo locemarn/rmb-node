@@ -1,3 +1,5 @@
+
+# User
 enum UserRole {
   superuser
   admin
@@ -17,6 +19,7 @@ type UserType {
   posts: [PostType]
 }
 
+# Post
 type PostType {
   id: ID!
   title: String!
@@ -24,23 +27,10 @@ type PostType {
   user: UserType!
   published: Boolean!
   categories: [CategoryType]
+  comments: [CommentType]
   created_at: String
   updated_at: String
   categoryPostsConnection: CategoryPostsConnection
-}
-
-type CategoryType {
-  id: ID!
-  name: String!
-  posts: [PostType]
-}
-
-type CategoryPostsConnection {
-  edges: [CategoryPostsEdge]
-}
-type CategoryPostsEdge {
-  postId: Int!
-  categoryId: Int!
 }
 
 input CreatePostInput {
@@ -59,12 +49,50 @@ input UpdatePostInput {
   categories: [Int!]!
 }
 
+# Category
+type CategoryType {
+  id: ID!
+  name: String!
+  posts: [PostType]
+}
+
+type CategoryPostsConnection {
+  edges: [CategoryPostsEdge]
+}
+type CategoryPostsEdge {
+  postId: Int!
+  categoryId: Int!
+}
+
+# Comment
+type CommentType {
+  id: ID!
+  content: String!
+  postId: ID!
+  userId: ID!
+  created_at: String
+  updated_at: String
+}
+
+input CreateCommentInput {
+  content: String!
+  postId: ID!
+  userId: ID!
+}
+
+input UpdateCommentInput {
+  id: ID!
+  content: String!
+}
+
+# Query
 type Query {
   posts: [PostType]
   users: [UserType]
   categories: [CategoryType]
 }
 
+# Mutation
 type Mutation {
   createUser(username: String! email: String! password: String! role: UserRole!): UserType
   updateUser(id: ID! username: String email: String password: String role: UserRole): UserType
@@ -81,4 +109,10 @@ type Mutation {
   updateCategory(id: ID! name: String!): CategoryType
   deleteCategory(id: ID!): CategoryType
   getCategoryById(id: ID!): CategoryType
+
+  createComment(input: CreateCommentInput!): CommentType
+  updateComment(input: UpdateCommentInput!): CommentType
+  deleteComment(id: ID!): CommentType
+  getCommentsByPostId(postId: ID!): [CommentType]
+  getCommentById(id: ID!): CommentType
 }

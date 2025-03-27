@@ -16,7 +16,8 @@ export class PostPrismaRepository implements PostRepositoryInterface {
       const posts = await this._prisma.post.findMany({
         include: {
           categories: true,
-          user: true
+          user: true,
+          comments: true
         }
       })
       return posts as unknown as PostEntity[]
@@ -74,13 +75,22 @@ export class PostPrismaRepository implements PostRepositoryInterface {
 
   async delete(id: number): Promise<PostEntity> {
     try {
-      const deletedPost = await this._prisma.post.delete({
+      const deletedPost = this._prisma.post.delete({
         where: { id: +id },
         include: {
-          categories: true
+          categories: true,
+          comments: true
         }
       })
-      return deletedPost as unknown as PostEntity
+
+      const deleteComments = this._prisma.comment.deleteMany({
+        where: {
+          postId: +id,
+        }
+      })
+
+      const transaction = await this._prisma.$transaction([deleteComments, deletedPost])
+      return transaction[1] as unknown as PostEntity
     } catch (error) {
       const err = error as Error
       throw err
@@ -93,7 +103,8 @@ export class PostPrismaRepository implements PostRepositoryInterface {
         where: { id: +id },
         include: {
           categories: true,
-          user: true
+          user: true,
+          comments: true
         }
       })
       return post as unknown as PostEntity
@@ -108,7 +119,9 @@ export class PostPrismaRepository implements PostRepositoryInterface {
       const post = await this._prisma.post.findMany({
         where: { title: { contains: title } },
         include: {
-          categories: true
+          categories: true,
+          comments: true,
+          user: true
         }
       })
       return post as unknown as PostEntity[]

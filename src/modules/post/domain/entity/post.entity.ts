@@ -1,14 +1,7 @@
 import { randomInt } from 'node:crypto'
+import { CategoryEntity } from '../../../category/domain/entity/category.entity'
 
 type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
-
-interface CategoryEntity {
-  id: number
-  name: string
-  posts: PostEntity[]
-}
-
-
 
 export class PostEntity {
   id?: number

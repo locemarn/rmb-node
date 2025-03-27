@@ -3,11 +3,14 @@ import { GraphqlPostController } from '../../../modules/post/infra/api/graphql.c
 import { UserEntity } from '../../../modules/user/domain/entity/user.entity'
 import { GraphqlUserController } from '../../../modules/user/infra/api/graphql.controller'
 import { PostEntity } from '../../../modules/post/domain/entity/post.entity'
-import { CategoryGraphqlController } from '../../../modules/catogory/infra/api/category.graphql.controller'
+import { CategoryGraphqlController } from '../../../modules/category/infra/api/category.graphql.controller'
+import { CommentsGraphqlController } from '../../../modules/comments/infra/api/comments.graphql.controller'
+import { CommentEntity } from '../../../modules/comments/domain/entity/comment.entity'
 
 const graphqlUserController = new GraphqlUserController()
 const graphqlPostController = new GraphqlPostController()
 const graphqlCategoryController = new CategoryGraphqlController()
+const graphqlCommentsController = new CommentsGraphqlController()
 
 export const resolvers = {
   Query: {
@@ -173,6 +176,61 @@ export const resolvers = {
           extensions: { code: 'INTERNAL_SERVER_ERROR'},
         });
       }
-    }
+    },
+
+    createComment: async (parent: unknown, args: { input: CommentEntity }) => {
+      try {
+        return await graphqlCommentsController.createComment(args.input)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    updateComment: async (parent: unknown, args: { input: CommentEntity }) => {
+      if (!args.input.id) throw new Error('Comment ID must be provided!')
+      try {
+        return await graphqlCommentsController.updateComment(args.input)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, { 
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    deleteComment: async (parent: unknown, args: { id: number }) => {
+      if (!args.id) throw new Error('Comment ID must be provided!')
+      try {
+        return await graphqlCommentsController.deleteComment(args.id)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    getCommentsByPostId: async (parent: unknown, args: { postId: number }) => {
+      if (!args.postId) throw new Error('Post ID must be provided!')
+      try {
+        return await graphqlCommentsController.getCommentsByPostId(args.postId)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    getCommentById: async (parent: unknown, args: { id: number }) => {
+      if (!args.id) throw new Error('Comment ID must be provided!')
+      try {
+        return await graphqlCommentsController.getCommentById(args.id)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
   },
 }
