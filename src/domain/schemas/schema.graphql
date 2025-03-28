@@ -29,6 +29,7 @@ type PostType {
   categories: [CategoryType]
   comments: [CommentType]
   response: [ResponseType]
+  likes: [LikeType]
   created_at: String
   updated_at: String
   categoryPostsConnection: CategoryPostsConnection
@@ -71,6 +72,7 @@ type CommentType {
   content: String!
   postId: ID!
   userId: ID!
+  user: UserType!
   response: [ResponseType]
   created_at: String
   updated_at: String
@@ -92,6 +94,7 @@ type ResponseType {
   content: String!
   commentId: ID!
   userId: ID!
+  user: UserType!
   created_at: String
   updated_at: String
 }
@@ -107,6 +110,12 @@ input UpdateResponseInput {
   content: String!
 }
 
+# Like
+type LikeType {
+  id: ID!
+  postId: ID!
+  userId: ID!
+}
 
 # Query
 type Query {
@@ -144,4 +153,8 @@ type Mutation {
   deleteResponse(id: ID!): ResponseType
   getResponsesByCommentId(commentId: ID!): [ResponseType]
   getResponseById(id: ID!): ResponseType
+
+  addLike(postId: ID! userId: ID!): LikeType
+  removeLike(postId: ID! userId: ID!): LikeType
+  getUserLikes(userId: ID!): [LikeType]
 }

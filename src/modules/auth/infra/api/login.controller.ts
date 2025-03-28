@@ -31,6 +31,7 @@ export class LoginController {
       const { token, message } = generateToken(user.email)
 
       console.log('login ok', token)
+      console.log('user', user)
 
       return res.status(200).json({ token, user, message })
     } catch (error) {

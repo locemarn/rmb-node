@@ -8,11 +8,15 @@ import { CommentsGraphqlController } from '../../../modules/comments/infra/api/c
 import { CommentEntity } from '../../../modules/comments/domain/entity/comment.entity'
 import { ResponseEntity } from '../../../modules/response/domain/entity/response.entity'
 import { ResponseGraphqlController } from '../../../modules/response/infra/api/response.graphql.controller'
+import { LikeGraphqlController } from '../../../modules/like/infra/api/like.graphql.controlles'
+
+
 const graphqlUserController = new GraphqlUserController()
 const graphqlPostController = new GraphqlPostController()
 const graphqlCategoryController = new CategoryGraphqlController()
 const graphqlCommentsController = new CommentsGraphqlController()
 const graphqlResponseController = new ResponseGraphqlController()
+const graphqlLikeController = new LikeGraphqlController()
 
 export const resolvers = {
   Query: {
@@ -289,5 +293,42 @@ export const resolvers = {
         });
       }
     },
+
+    addLike: async (parent: unknown, args: { postId: number, userId: number }) => {
+      if (!args.postId) throw new Error('Post ID must be provided!')
+      if (!args.userId) throw new Error('User ID must be provided!')
+      try {
+        return await graphqlLikeController.addLike(args.postId, args.userId)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    removeLike: async (parent: unknown, args: { postId: number, userId: number }) => {
+      console.log('removeLike args', args)
+      if (!args.postId) throw new Error('Post ID must be provided!')
+      if (!args.userId) throw new Error('User ID must be provided!')
+      try {
+        return await graphqlLikeController.removeLike(args.postId, args.userId)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    },
+    getUserLikes: async (parent: unknown, args: { userId: number }) => {
+      if (!args.userId) throw new Error('User ID must be provided!')
+      try {
+        return await graphqlLikeController.getUserLikes(args.userId)
+      } catch (error) {
+        const err = error as Error
+        throw new GraphQLError(err.message, {
+          extensions: { code: 'INTERNAL_SERVER_ERROR'},
+        });
+      }
+    }
   },
 }

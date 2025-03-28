@@ -17,7 +17,8 @@ export class PostPrismaRepository implements PostRepositoryInterface {
         include: {
           categories: true,
           user: true,
-          comments: true
+          comments: true,
+          likes: true
         }
       })
       return posts as unknown as PostEntity[]
@@ -104,9 +105,20 @@ export class PostPrismaRepository implements PostRepositoryInterface {
         include: {
           categories: true,
           user: true,
-          comments: true
+          comments: {
+            include: {
+              user: true,
+              response: {
+                include: {
+                  user: true
+                }
+              }
+            }
+          },
+          likes: true
         }
       })
+      console.log('post', post)
       return post as unknown as PostEntity
     } catch (error) {
       const err = error as Error

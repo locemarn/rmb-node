@@ -81,17 +81,18 @@ export class UserPrismaRepository implements UserRepositoryInterface {
     try {
       if (!id) throw new Error('id required for delete.')
       const deleteUser = this._prisma.user.delete({
-        where: { id }
+        where: { id: +id }
       })
       const deletePosts = this._prisma.post.deleteMany({
         where: {
-          userId: id,
+          userId: +id,
         }
       })
       const transaction = await this._prisma.$transaction([deletePosts, deleteUser])
       return transaction[1] as unknown as UserEntity
     } catch (error) {
       const err = error as Error
+      console.log('error', err)
       throw new ResponseError(err.message)
     }
   }
