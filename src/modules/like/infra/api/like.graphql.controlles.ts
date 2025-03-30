@@ -3,14 +3,17 @@ import { LikeUsecases } from "../../application/usecases/like.usecases";
 import { LikeEntity } from "../../domain/entity/like.entity";
 import { LikePrismaRepository } from "../database/prisma/likePrisma.repository";
 import { LikeRepository } from "../repository/like.repository";
-
+import prisma from "../../../../infra/libs/prisma/client";
+import { PrismaClient } from "@prisma/client";
 export class LikeGraphqlController {
   private _prismaRepo: LikePrismaRepository
   private _likeRepo: LikeRepository
   private _likeUseCases: LikeUsecases
+  private _prisma: PrismaClient
 
   constructor() {
-    this._prismaRepo = new LikePrismaRepository()
+    this._prisma = prisma
+    this._prismaRepo = new LikePrismaRepository(this._prisma)
     this._likeRepo = new LikeRepository(this._prismaRepo)
     this._likeUseCases = new LikeUsecases(this._likeRepo)
   }

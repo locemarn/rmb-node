@@ -1,7 +1,8 @@
 export class ResponseError extends Error {
-  constructor(message: string) {
-    // console.error('akiii', message)
+  statusCode: number
+  constructor(message: string, statusCode?: number) {
     super(message)
     this.name = 'ResponseError'
+    this.statusCode = statusCode ?? 400
   }
 }
